@@ -1,9 +1,13 @@
+import java.io.File;
+
 
 public class Main {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static File folder = new File("src/processos_entrada/");
+	static String temp = "";
 
+	public static void main(String[] args) {
+		Escalonador.escalonarProcessos();
 	}
 
 }

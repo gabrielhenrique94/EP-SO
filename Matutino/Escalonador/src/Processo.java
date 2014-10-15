@@ -32,35 +32,70 @@ public class Processo {
 	 */
 	private boolean anteriormenteBloqueado = false; 
 	
+	/**
+	 * Construtor da classe.
+	 * Seta os parametros PC com 0, pois ainda não comecou a contagem do programa
+	 * e das instrucoes, com um array contendo as instrucoes
+	 * @param instrucoes
+	 */
 	public Processo(ArrayList<String> instrucoes) {
 		this.PC = 0;
 		this.instrucoes = instrucoes;
 	}
-
+	
+	/**
+	 * Get da variavel x
+	 * @return
+	 */
 	public int getX() {
 		return X;
 	}
 
+	/**
+	 * Set da variavel x
+	 * @param x
+	 */
 	public void setX(int x) {
 		X = x;
 	}
 
+	/**
+	 * Get da variavel y
+	 * @return
+	 */
 	public int getY() {
 		return Y;
 	}
 
+	/**
+	 * Set da variavel y
+	 * @param y
+	 */
 	public void setY(int y) {
 		Y = y;
 	}
 
+	/**
+	 * Get da variavel PC
+	 * @return
+	 */
 	public int getPC() {
 		return PC;
 	}
 
+	/**
+	 * Set da variavel PC, feio de forma diferente, nao substituindo um valor 
+	 * pelo outro, mas sim somando o valor enviado ao valor ja fixado em PC
+	 * @param soma
+	 */
 	public void setPC(int soma) {
 		PC = PC + soma;
 	}
 	
+	/**
+	 * Retorna a proxima instrucao do Processo, que e uma String
+	 * @return
+	 */
 	public String getProximaInstrucao() {
 		
 		if (instrucoes.size() != 0) {
@@ -73,10 +108,18 @@ public class Processo {
 	
 	}
 
+	/**
+	 * Verifica se a variavel anteriormenteBloqueado e Verdadeira ou Falsa
+	 * @return
+	 */
 	public boolean isAnteriormenteBloqueado() {
 		return anteriormenteBloqueado;
 	}
 
+	/**
+	 * Seta a variavel anteriormenteBloqueado
+	 * @param anteriormenteBloqueado
+	 */
 	public void setAnteriormenteBloqueado(boolean anteriormenteBloqueado) {
 		this.anteriormenteBloqueado = anteriormenteBloqueado;
 	}
