@@ -15,10 +15,11 @@ public class LeitorArquivos {
 	/**
 	 * Le o arquivo que contem as instrucoes destinadas a um Processo, e devolve-as
 	 * @param nomeProcesso
+	 * @param posicao
 	 * @return
 	 */
-	public static ArrayList<String> lerProcesso (String nomeProcesso){
-		
+	public static ArrayList<String> lerProcesso (String nomeProcesso) {
+		System.out.println("Lendo processo: " + nomeProcesso);
 		ArrayList<String> processo = new ArrayList<String>();
 		 
 		try {
@@ -48,6 +49,7 @@ public class LeitorArquivos {
 	 * @return
 	 */
 	public static LinkedList<Processo> carregarProcessos() {
+		System.out.println("CARREGA_PROCESSOS");
 		LinkedList<Processo> processos = new LinkedList<Processo>();
 		Processo aux;
 		File folder = new File("src/processos_entrada/");
@@ -56,15 +58,17 @@ public class LeitorArquivos {
 
 			if (fileEntry.isFile()) {
 				temp = fileEntry.getName();
-				if (temp != "quantum.txt") {  
-					if ((temp.substring(temp.lastIndexOf('.') + 1, temp.length()).toLowerCase()).equals("txt")) {
-						ArrayList<String> instrucoes = lerProcesso(folder.getAbsolutePath()+ "\\" + fileEntry.getName());
-						aux = null;
-						if (instrucoes != null) {
-							aux = new Processo(instrucoes);
-							processos.add(aux);
-						}
+				if (!temp.equals("quantum.txt")) {  
+		
+					int posicao = (Integer.parseInt(temp.split("\\.")[0])) - 1; // Pega o numero do processo e subtrai 1, para termos uma fila a partir do 0
+	
+					ArrayList<String> instrucoes = lerProcesso("src/processos_entrada/" + temp);
+					aux = null;
+					if (instrucoes != null) {
+						aux = new Processo(instrucoes);
+						processos.add(aux);
 					}
+					
 				}
 			}
 		}	

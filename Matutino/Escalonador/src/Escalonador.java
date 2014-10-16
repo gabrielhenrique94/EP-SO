@@ -1,6 +1,5 @@
 import java.util.LinkedList;
 
-
 public class Escalonador {
 	private static LinkedList<Processo> listaProcessosProntos;
 	private LinkedList<Processo> listaProcessosBloqueados;
