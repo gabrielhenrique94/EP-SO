@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 
@@ -24,7 +25,7 @@ public class Processo {
 	/**
 	 * Instrucoes que devem ser executadas para esse processo
 	 */
-	private ArrayList<String> instrucoes = new ArrayList<String> ();
+	public List<String> instrucoes = new LinkedList<String> ();
 	
 	/**
 	 * Avisa se a instrucao anterior entrou para a conta do PC. Pois caso tenha 
@@ -38,7 +39,7 @@ public class Processo {
 	 * e das instrucoes, com um array contendo as instrucoes
 	 * @param instrucoes
 	 */
-	public Processo(ArrayList<String> instrucoes) {
+	public Processo(LinkedList<String> instrucoes) {
 		this.PC = 0;
 		this.instrucoes = instrucoes;
 	}
@@ -98,7 +99,7 @@ public class Processo {
 	 */
 	public String getProximaInstrucao() {
 		
-		if (instrucoes.size() != 0) {
+		if (instrucoes.isEmpty()) {
 			String instrucao = instrucoes.get(0);
 			instrucoes.remove(0);
 			return instrucao;

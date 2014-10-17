@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+
 
 /**
  * 
@@ -18,9 +20,9 @@ public class LeitorArquivos {
 	 * @param posicao
 	 * @return
 	 */
-	public static ArrayList<String> lerProcesso (String nomeProcesso) {
+	public static LinkedList<String> lerProcesso (String nomeProcesso) {
 		System.out.println("Lendo processo: " + nomeProcesso);
-		ArrayList<String> processo = new ArrayList<String>();
+		LinkedList<String> processo = new LinkedList<String>();
 		 
 		try {
  
@@ -62,11 +64,12 @@ public class LeitorArquivos {
 		
 					int posicao = (Integer.parseInt(temp.split("\\.")[0])) - 1; // Pega o numero do processo e subtrai 1, para termos uma fila a partir do 0
 	
-					ArrayList<String> instrucoes = lerProcesso("src/processos_entrada/" + temp);
+					LinkedList<String> instrucoes = lerProcesso("src/processos_entrada/" + temp);
 					aux = null;
 					if (instrucoes != null) {
 						aux = new Processo(instrucoes);
 						processos.add(aux);
+						System.out.println(aux.instrucoes.size());
 					}
 					
 				}

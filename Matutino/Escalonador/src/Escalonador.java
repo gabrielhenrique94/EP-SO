@@ -1,8 +1,9 @@
-import java.util.LinkedList;
+
+import java.util.List;
 
 public class Escalonador {
-	private static LinkedList<Processo> listaProcessosProntos;
-	private LinkedList<Processo> listaProcessosBloqueados;
+	private static List <Processo> listaProcessosProntos;
+	private List <Processo> listaProcessosBloqueados;
 	private static int quantum;
 	
 	/**
