@@ -13,5 +13,9 @@ public class Escalonador {
 		quantum = LeitorArquivos.carregarQuantum(); 
 		
 	}
+	
+	
+	
+	
 
 }
