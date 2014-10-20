@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * 
@@ -7,6 +8,8 @@ import java.util.List;
  *
  */
 public class Processo {
+	
+	private String nomePrograma;
 	/**
 	 * Contador do programa, que e um registrador de uso especifico
 	 */
@@ -25,13 +28,20 @@ public class Processo {
 	/**
 	 * Instrucoes que devem ser executadas para esse processo
 	 */
-	public List<String> instrucoes = new LinkedList<String> ();
+	public LinkedList<String> instrucoes = new LinkedList<String> ();
 	
 	/**
 	 * Avisa se a instrucao anterior entrou para a conta do PC. Pois caso tenha 
-	 * tido uma E/S a instrucao nao entra na contagem e o processo e bloqueado. 
+	 * tido uma E/S a instrucao nao entra na contagem e o processo e bloqueado
+	 * 0 -> entrou para conta, 1 -> nao entrou para a conta. 
 	 */
-	private boolean anteriormenteBloqueado = false; 
+	private int anteriormenteBloqueado; 
+	
+	/**
+	 * Quando o processo for bloqueado, ele deve esperar outros dois processos executarem para retornar.
+	 * A variavel e entao utilizada quando o processo e bloqueado.
+	 */
+	private int esperaDoBloqueio;
 	
 	/**
 	 * Construtor da classe.
@@ -39,8 +49,11 @@ public class Processo {
 	 * e das instrucoes, com um array contendo as instrucoes
 	 * @param instrucoes
 	 */
-	public Processo(LinkedList<String> instrucoes) {
+	public Processo(String nomePrograma, LinkedList<String> instrucoes) {
+		this.nomePrograma = nomePrograma;
 		this.PC = 0;
+		this.esperaDoBloqueio = 0;
+		this.anteriormenteBloqueado = 0;
 		this.instrucoes = instrucoes;
 	}
 	
@@ -98,31 +111,34 @@ public class Processo {
 	 * @return
 	 */
 	public String getProximaInstrucao() {
-		
-		if (instrucoes.isEmpty()) {
-			String instrucao = instrucoes.get(0);
-			instrucoes.remove(0);
-			return instrucao;
-		}
+		if (instrucoes.size() > 0) 
+			return instrucoes.removeFirst();
 		
 		return "";
-	
 	}
 
-	/**
-	 * Verifica se a variavel anteriormenteBloqueado e Verdadeira ou Falsa
-	 * @return
-	 */
-	public boolean isAnteriormenteBloqueado() {
+	public int getEsperaDoBloqueio() {
+		return esperaDoBloqueio;
+	}
+
+	public void setEsperaDoBloqueio(int esperaDoBloqueio) {
+		this.esperaDoBloqueio = esperaDoBloqueio;
+	}
+
+	public int getAnteriormenteBloqueado() {
 		return anteriormenteBloqueado;
 	}
 
-	/**
-	 * Seta a variavel anteriormenteBloqueado
-	 * @param anteriormenteBloqueado
-	 */
-	public void setAnteriormenteBloqueado(boolean anteriormenteBloqueado) {
+	public void setAnteriormenteBloqueado(int anteriormenteBloqueado) {
 		this.anteriormenteBloqueado = anteriormenteBloqueado;
+	}
+
+	public String getNomePrograma() {
+		return nomePrograma;
+	}
+
+	public void setNomePrograma(String nomePrograma) {
+		this.nomePrograma = nomePrograma;
 	}
 
 }
