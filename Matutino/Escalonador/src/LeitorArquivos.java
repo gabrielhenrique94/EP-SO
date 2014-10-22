@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -109,22 +111,26 @@ public class LeitorArquivos {
 		return -1;
 	}
 	
-	public static Logger inicializaLogFile(String name) {
-		Logger logger = Logger.getLogger("name");  
-	    FileHandler fh;  
+	public static BufferedWriter inicializaLogFile(String name) {
 
-	    try { 
+	    try {
 	    	File f = new File("src/saida/" + name + ".txt");
-	        fh = new FileHandler("src/saida/" + name + ".txt");  
-	        logger.addHandler(fh);
-	        SimpleFormatter formatter = new SimpleFormatter();  
-	        fh.setFormatter(formatter);  
+	    	BufferedWriter out = new BufferedWriter(new FileWriter("src/saida/" + name + ".txt"));
+	    	return out;
  
 	    } catch (IOException e) {  
 	        e.printStackTrace();  
 	    }
 	    
-		return logger;  
+		return null;  
+	}
+	
+	public static void closeLogFile(BufferedWriter file) {
+		try {
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
 

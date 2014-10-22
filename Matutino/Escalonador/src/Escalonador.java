@@ -1,11 +1,13 @@
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Logger;
 
 public class Escalonador {
-	private static Logger logfile;
+	private static BufferedWriter logfile;
 	private static LinkedList <Processo> listaProcessosProntos;
 	private LinkedList <Processo> listaProcessosBloqueados;
 	private static  int quantum;
@@ -21,8 +23,13 @@ public class Escalonador {
 		while(listIterator.hasNext()){
 			Processo p = listIterator.next();
 			//Exemplo de como add log na file
-			logfile.info(p.getNomePrograma());
+			try {
+				logfile.write(p.getNomePrograma()+'\n');
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+		LeitorArquivos.closeLogFile(logfile);
 		
 	}
 	
