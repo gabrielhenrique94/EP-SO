@@ -63,7 +63,7 @@ public class Escalonador {
 		if (p == null) 
 			p = listaProcessosBloqueados.removeFirst();
 			
-		p.setAnteriormenteBloqueado(1);
+		p.setAnteriormenteBloqueado(1	);
 		p.setBloqueado(false);
 		p.setTempoEsperaBloqueio(2);
 		listaProcessosProntos.add(p);
@@ -75,17 +75,14 @@ public class Escalonador {
 	 * o tempo necessario devem passar para a lista de pronto.
 	 */
 	private static void atualizarListaBloqueados() {
-		LinkedList<Processo> listaAuxiliar = listaProcessosBloqueados;
-		ListIterator<Processo> it = listaAuxiliar.listIterator();
-		if (it.hasNext()) {
-			int index = it.nextIndex();
-			Processo p = listaProcessosBloqueados.get(index);
+		LinkedList<Processo> listaAuxiliar = (LinkedList<Processo>) listaProcessosBloqueados.clone();
+		
+		for(Processo p: listaAuxiliar){
 			p.setTempoEsperaBloqueio(p.getTempoEsperaBloqueio() - 1);
-			if (p.getTempoEsperaBloqueio() == 0) {
-				listaProcessosBloqueados.remove(index);
+			if(p.getTempoEsperaBloqueio() == 0){
+				listaProcessosBloqueados.remove(p);
 				passarBloqueadoParaPronto(p);
 			}
-			it.next();
 		}
 	}
 	
