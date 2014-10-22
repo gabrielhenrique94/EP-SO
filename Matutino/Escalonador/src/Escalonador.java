@@ -39,17 +39,54 @@ public class Escalonador {
 		Processo processoCorrente = null;
 		int contadorInstrucoesProcessoCorrente = 0;
 		while(listaProcessosProntos.size() > 0 || listaProcessosBloqueados.size() > 0) {
-			if (processoCorrente == null) {
+			if (processoCorrente == null || listaProcessosProntos.size() > 0) {
 				processoCorrente = listaProcessosProntos.removeFirst();
 				contadorInstrucoesProcessoCorrente = 0;
+			} else if (listaProcessosBloqueados.size() > 0) {
+				passarBloqueadoParaPronto(null);
 			}
 			
 			while (!processoCorrente.getBloqueado() && contadorInstrucoesProcessoCorrente <= quantum) {
-				
+				String instrucao = processoCorrente.getProximaInstrucao();
 			}
 			
 		}
 		
+	}
+
+	/**
+	 * Como a lista de bloqueados tambem acaba funcionando como uma fila, 
+	 * basta pegar o primeiro para passar para a lista de prontos em qualquer
+	 * tipo de chamada para o mesmo.
+	 */
+	private static void passarBloqueadoParaPronto(Processo p) {
+		if (p == null) 
+			p = listaProcessosBloqueados.removeFirst();
+			
+		p.setAnteriormenteBloqueado(1);
+		p.setBloqueado(false);
+		p.setTempoEsperaBloqueio(2);
+		listaProcessosProntos.add(p);
+	}
+	
+	/**
+	 * Cada vez que um processo e executado, a variavel espera de bloqueio 
+	 * de todos os processos bloqueados deve ser atualizada, e se ja estiverem
+	 * o tempo necessario devem passar para a lista de pronto.
+	 */
+	private static void atualizarListaBloqueados() {
+		LinkedList<Processo> listaAuxiliar = listaProcessosBloqueados;
+		ListIterator<Processo> it = listaAuxiliar.listIterator();
+		if (it.hasNext()) {
+			int index = it.nextIndex();
+			Processo p = listaProcessosBloqueados.get(index);
+			p.setTempoEsperaBloqueio(p.getTempoEsperaBloqueio() - 1);
+			if (p.getTempoEsperaBloqueio() == 0) {
+				listaProcessosBloqueados.remove(index);
+				passarBloqueadoParaPronto(p);
+			}
+			it.next();
+		}
 	}
 	
 	

@@ -45,7 +45,7 @@ public class Processo {
 	 * Quando o processo for bloqueado, ele deve esperar outros dois processos executarem para retornar.
 	 * A variavel e entao utilizada quando o processo e bloqueado.
 	 */
-	private int esperaDoBloqueio;
+	private int tempoEsperaBloqueio;
 	
 	/**
 	 * Construtor da classe.
@@ -56,7 +56,7 @@ public class Processo {
 	public Processo(String nomePrograma, LinkedList<String> instrucoes) {
 		this.nomePrograma = nomePrograma;
 		this.PC = 0;
-		this.esperaDoBloqueio = 0;
+		this.tempoEsperaBloqueio = 2;
 		this.anteriormenteBloqueado = 0;
 		this.instrucoes = instrucoes;
 		this.bloqueado = false;
@@ -122,12 +122,12 @@ public class Processo {
 		return "";
 	}
 
-	public int getEsperaDoBloqueio() {
-		return esperaDoBloqueio;
+	public int getTempoEsperaBloqueio() {
+		return tempoEsperaBloqueio;
 	}
 
-	public void setEsperaDoBloqueio(int esperaDoBloqueio) {
-		this.esperaDoBloqueio = esperaDoBloqueio;
+	public void setTempoEsperaBloqueio(int esperaDoBloqueio) {
+		this.tempoEsperaBloqueio = esperaDoBloqueio;
 	}
 
 	public int getAnteriormenteBloqueado() {
