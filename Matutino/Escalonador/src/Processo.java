@@ -38,6 +38,10 @@ public class Processo {
 	private int anteriormenteBloqueado; 
 	
 	/**
+	 * Quando um processo e bloqueado ele recebe true para essa variavel
+	 */
+	private Boolean bloqueado;
+	/**
 	 * Quando o processo for bloqueado, ele deve esperar outros dois processos executarem para retornar.
 	 * A variavel e entao utilizada quando o processo e bloqueado.
 	 */
@@ -55,6 +59,7 @@ public class Processo {
 		this.esperaDoBloqueio = 0;
 		this.anteriormenteBloqueado = 0;
 		this.instrucoes = instrucoes;
+		this.bloqueado = false;
 	}
 	
 	/**
@@ -139,6 +144,14 @@ public class Processo {
 
 	public void setNomePrograma(String nomePrograma) {
 		this.nomePrograma = nomePrograma;
+	}
+
+	public Boolean getBloqueado() {
+		return bloqueado;
+	}
+
+	public void setBloqueado(Boolean bloqueado) {
+		this.bloqueado = bloqueado;
 	}
 
 }

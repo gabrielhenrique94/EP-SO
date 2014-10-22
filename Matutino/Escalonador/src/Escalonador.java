@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class Escalonador {
 	private static BufferedWriter logfile;
 	private static LinkedList <Processo> listaProcessosProntos;
-	private LinkedList <Processo> listaProcessosBloqueados;
+	private static LinkedList <Processo> listaProcessosBloqueados;
 	private static  int quantum;
 	
 	/**
@@ -30,6 +30,25 @@ public class Escalonador {
 			}
 		}
 		LeitorArquivos.closeLogFile(logfile);
+		
+		escalonar();
+		
+	}
+
+	private static void escalonar() {
+		Processo processoCorrente = null;
+		int contadorInstrucoesProcessoCorrente = 0;
+		while(listaProcessosProntos.size() > 0 || listaProcessosBloqueados.size() > 0) {
+			if (processoCorrente == null) {
+				processoCorrente = listaProcessosProntos.removeFirst();
+				contadorInstrucoesProcessoCorrente = 0;
+			}
+			
+			while (!processoCorrente.getBloqueado() && contadorInstrucoesProcessoCorrente <= quantum) {
+				
+			}
+			
+		}
 		
 	}
 	
