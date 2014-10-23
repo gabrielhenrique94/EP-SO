@@ -51,10 +51,12 @@ public class Escalonador {
 			if (!listaProcessosProntos.isEmpty()) {
 				nomeProcesso = ((LinkedList<String>) listaProcessosProntos).removeFirst();
 				emExecucao = tabelaProcessos.get(nomeProcesso);
-				while (!emExecucao.getBloqueado() && time <= quantum) {
+				String info = null;
+				while ( info==null && time < quantum) {
 					String instrucao = emExecucao.getProximaInstrucao();
-					executaInstrucao(instrucao);
+					info = executaInstrucao(instrucao);
 				}
+				
 				
 			} else if (!listaProcessosBloqueados.isEmpty()) {
 				atualizarListaBloqueados();
@@ -63,27 +65,38 @@ public class Escalonador {
 		
 	}
 	
-	private static void executaInstrucao(String instrucao){
+	private static String executaInstrucao(String instrucao){
+		String info = null;
+		
 		switch (instrucao) {
 		case "COM":
 			//executa o comando
+			time++;
 			break;
 			
 		case "E/S":
 			//precesso de E/S
+			if(time == 0){
+				info = "Interrompendo "+emExecucao.getNomePrograma()+" após "+time+"instruçao (havia um comando antes da E/S)(havia apenas a E/S)";
+			}else{
+				info = "Interrompendo "+emExecucao.getNomePrograma()+" após "+time+"instruçao (havia "+time+" comando antes da E/S)";
+			}
 			break;
 			
 		case "SAIDA":
 			//quandoo processo termina
+			tabelaProcessos.remove(emExecucao.getNomePrograma());
+			info = emExecucao.getNomePrograma()+" terminado. X="+emExecucao.getX()+". Y="+emExecucao.getY();
 			break;
 			
 		default:
-			//atribui��o
+			//atribui��o
 			if(instrucao.charAt(0)=='X'){
 				emExecucao.setX(instrucao.charAt(2));
 			}else{
 				emExecucao.setY(instrucao.charAt(2));
 			}
+			time++;
 			break;
 		}
 	}
@@ -101,12 +114,12 @@ public class Escalonador {
 	}
 	
 	/**
-	 * Cada vez que um BCP e executado, a variavel espera de bloqueio 
+	 * Cada vez que um Proceso e executado, a variavel espera de bloqueio 
 	 * de todos os processos bloqueados deve ser atualizada, e se ja estiverem
 	 * o tempo necessario devem passar para a lista de pronto.
 	 */
 	private static void atualizarListaBloqueados() {
-		LinkedList<BCP> listaAuxiliar = (LinkedList<BCP>) listaProcessosBloqueados.clone();
+		LinkedList<BCP> listaAuxiliar = (LinkedList<BCP>) (listaProcessosBloqueados).clone();
 		
 		for(BCP processo: listaAuxiliar){
 			processo.setTempoEsperaBloqueio(processo.getTempoEsperaBloqueio() - 1);
