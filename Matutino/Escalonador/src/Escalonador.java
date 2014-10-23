@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 
 public class Escalonador {
 	private static BufferedWriter logfile;
-	private static List <String> listaProcessosProntos = new LinkedList<String>();
-	private static List <String> listaProcessosBloqueados = new LinkedList<String>();
+	private static LinkedList<String> listaProcessosProntos = new LinkedList<String>();
+	private static LinkedList<String> listaProcessosBloqueados = new LinkedList<String>();
 	private static Map<String, BCP> tabelaProcessos = new HashMap<String, BCP>();
 	private static BCP emExecucao = null;
 	private static int time = 0;
@@ -99,6 +99,7 @@ public class Escalonador {
 			time++;
 			break;
 		}
+		return info;
 	}
 
 	/**
@@ -119,13 +120,14 @@ public class Escalonador {
 	 * o tempo necessario devem passar para a lista de pronto.
 	 */
 	private static void atualizarListaBloqueados() {
-		LinkedList<BCP> listaAuxiliar = (LinkedList<BCP>) (listaProcessosBloqueados).clone();
+		LinkedList<String> listaAuxiliar = (LinkedList<String>) listaProcessosBloqueados.clone();
 		
-		for(BCP processo: listaAuxiliar){
+		for(String processo_name: listaAuxiliar) {
+			BCP processo = tabelaProcessos.get(processo_name);
 			processo.setTempoEsperaBloqueio(processo.getTempoEsperaBloqueio() - 1);
 			if(processo.getTempoEsperaBloqueio() == 0){
-				listaProcessosBloqueados.remove(processo);
-				passarBloqueadoParaPronto(tabelaProcessos.get(processo));
+				listaProcessosBloqueados.remove(processo_name);
+				passarBloqueadoParaPronto(tabelaProcessos.get(processo_name));
 			}
 		}
 	}
