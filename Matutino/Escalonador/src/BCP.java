@@ -7,7 +7,7 @@ import java.util.ListIterator;
  * Representa um processo
  *
  */
-public class Processo {
+public class BCP {
 	
 	private String nomePrograma;
 	/**
@@ -53,7 +53,7 @@ public class Processo {
 	 * e das instrucoes, com um array contendo as instrucoes
 	 * @param instrucoes
 	 */
-	public Processo(String nomePrograma, LinkedList<String> instrucoes) {
+	public BCP(String nomePrograma, LinkedList<String> instrucoes) {
 		this.nomePrograma = nomePrograma;
 		this.PC = 0;
 		this.tempoEsperaBloqueio = 2;

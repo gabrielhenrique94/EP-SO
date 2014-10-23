@@ -5,8 +5,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -54,9 +56,9 @@ public class LeitorArquivos {
 	 * Devolve uma lista ligada com os processos ja criados.
 	 * @return
 	 */
-	public static LinkedList<Processo> carregarProcessos() {
-		LinkedList<Processo> processos = new LinkedList<Processo>();
-		Processo aux;
+	public static Map<String, BCP> carregarProcessos() {
+		Map<String, BCP> processos = new HashMap<String, BCP>();
+		BCP aux;
 		File folder = new File("src/processos_entrada/");
 		String temp = "";
 		
@@ -78,8 +80,8 @@ public class LeitorArquivos {
             LinkedList<String> instrucoes = lerProcesso("src/processos_entrada/" + listIterator.next());
 			aux = null;
 			if (instrucoes != null) {
-				aux = new Processo(instrucoes.removeFirst(), instrucoes);
-				processos.add(aux);
+				aux = new BCP(instrucoes.removeFirst(), instrucoes);
+				processos.put(aux.getNomePrograma(), aux);
 			}
         }
 
