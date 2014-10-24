@@ -1,22 +1,36 @@
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
 public class Escalonador {
 	private static BufferedWriter logfile;
-	private static LinkedList<String> listaProcessosProntos = new LinkedList<String>();
-	private static LinkedList<String> listaProcessosBloqueados = new LinkedList<String>();
+	private static List <String> listaProcessosProntos = new LinkedList<String>();
+	private static List <String> listaProcessosBloqueados = new LinkedList<String>();
 	private static Map<String, BCP> tabelaProcessos = new HashMap<String, BCP>();
 	private static BCP emExecucao = null;
 	private static int time = 0;
 	private static  int quantum;
+	
+	public static void printMap(){
+		Set<String> nomes = tabelaProcessos.keySet();
+		for(String nome: nomes){
+			System.out.println("-"+nome+"-"+tabelaProcessos.get(nome) );
+		}
+	}
+	
+	public static void printlist(Iterator<String> it){
+		while(it.hasNext()){
+			System.out.println("-"+it.next()+"-" );
+		}
+	}
 	
 	/**
 	 * Funcao que faz todas as chamadas de inicializacao do escalonador.
@@ -24,6 +38,8 @@ public class Escalonador {
 	public static void escalonarProcessos() {
 		tabelaProcessos.putAll(LeitorArquivos.carregarProcessos());
 		listaProcessosProntos.addAll(tabelaProcessos.keySet());
+		Collections.sort(listaProcessosProntos);
+		printlist(listaProcessosProntos.iterator());
 		quantum = LeitorArquivos.carregarQuantum(); 
 		logfile = LeitorArquivos.inicializaLogFile("log" + quantum);
 		
@@ -36,31 +52,49 @@ public class Escalonador {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-		LeitorArquivos.closeLogFile(logfile);
-		
+		}	
 		escalonar();
-		
+		LeitorArquivos.closeLogFile(logfile);
 	}
 
 	private static void escalonar() {
 		String nomeProcesso= null;
-		
-		while(tabelaProcessos.isEmpty()) {
+		System.out.println("Escalonando");
+		int x = 0;
+		while(!tabelaProcessos.isEmpty()&&  x<40) {
+			System.out.println("Ainda ha processos");
 			time = 0;
 			if (!listaProcessosProntos.isEmpty()) {
+				System.out.println("tem processo pronto");
 				nomeProcesso = ((LinkedList<String>) listaProcessosProntos).removeFirst();
 				emExecucao = tabelaProcessos.get(nomeProcesso);
+				try{
+					System.out.println("Carregando "+emExecucao.getNomePrograma());
+					logfile.write("Carregando "+emExecucao.getNomePrograma());
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
 				String info = null;
 				while ( info==null && time < quantum) {
+
 					String instrucao = emExecucao.getProximaInstrucao();
 					info = executaInstrucao(instrucao);
 				}
+				try{
+					if(info != null){
+						logfile.write(info);
+					}else{
+						System.out.println("Interrompendo "+emExecucao.getNomePrograma()+" após "+time+" instruções");
+						logfile.write("Interrompendo "+emExecucao.getNomePrograma()+" após "+time+" instruções");
+					}
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
 				
-				
-			} else if (!listaProcessosBloqueados.isEmpty()) {
+			} else {
 				atualizarListaBloqueados();
 			}			
+			x++;
 		}
 		
 	}
@@ -77,16 +111,17 @@ public class Escalonador {
 		case "E/S":
 			//precesso de E/S
 			if(time == 0){
-				info = "Interrompendo "+emExecucao.getNomePrograma()+" apÃ³s "+time+"instruÃ§ao (havia um comando antes da E/S)(havia apenas a E/S)";
+				info = "Interrompendo "+emExecucao.getNomePrograma()+" após "+time+"instruÃ§ao (havia um comando antes da E/S)(havia apenas a E/S)\n";
 			}else{
-				info = "Interrompendo "+emExecucao.getNomePrograma()+" apÃ³s "+time+"instruÃ§ao (havia "+time+" comando antes da E/S)";
+				info = "Interrompendo "+emExecucao.getNomePrograma()+" após "+time+"instruções (havia "+time+" comando antes da E/S)\n";
 			}
+			listaProcessosBloqueados.add(emExecucao.getNomePrograma());
 			break;
 			
 		case "SAIDA":
 			//quandoo processo termina
 			tabelaProcessos.remove(emExecucao.getNomePrograma());
-			info = emExecucao.getNomePrograma()+" terminado. X="+emExecucao.getX()+". Y="+emExecucao.getY();
+			info = emExecucao.getNomePrograma()+" terminado. X="+emExecucao.getX()+". Y="+emExecucao.getY()+"\n";
 			break;
 			
 		default:
@@ -120,14 +155,14 @@ public class Escalonador {
 	 * o tempo necessario devem passar para a lista de pronto.
 	 */
 	private static void atualizarListaBloqueados() {
-		LinkedList<String> listaAuxiliar = (LinkedList<String>) listaProcessosBloqueados.clone();
+		LinkedList<String> listaAuxiliar = (LinkedList<String>) ( (LinkedList<String>) listaProcessosBloqueados).clone();
 		
-		for(String processo_name: listaAuxiliar) {
-			BCP processo = tabelaProcessos.get(processo_name);
+		for(String nomeProcesso: listaAuxiliar){
+			BCP processo= tabelaProcessos.get(nomeProcesso);
 			processo.setTempoEsperaBloqueio(processo.getTempoEsperaBloqueio() - 1);
 			if(processo.getTempoEsperaBloqueio() == 0){
-				listaProcessosBloqueados.remove(processo_name);
-				passarBloqueadoParaPronto(tabelaProcessos.get(processo_name));
+				listaProcessosBloqueados.remove(nomeProcesso);
+				passarBloqueadoParaPronto(processo);
 			}
 		}
 	}
