@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 public class Escalonador {
 	private static BufferedWriter logfile;
-	private static List <String> listaProcessosProntos = new LinkedList<String>();
-	private static List <String> listaProcessosBloqueados = new LinkedList<String>();
+	private static LinkedList <String> listaProcessosProntos = new LinkedList<String>();
+	private static LinkedList <String> listaProcessosBloqueados = new LinkedList<String>();
 	private static Map<String, BCP> tabelaProcessos = new HashMap<String, BCP>();
 	private static BCP emExecucao = null;
 	private static int time = 0;
@@ -84,8 +84,8 @@ public class Escalonador {
 					if(info != null){
 						logfile.write(info);
 					}else{
-						System.out.println("Interrompendo "+emExecucao.getNomePrograma()+" após "+time+" instruções");
-						logfile.write("Interrompendo "+emExecucao.getNomePrograma()+" após "+time+" instruções");
+						System.out.println("Interrompendo "+emExecucao.getNomePrograma()+" apÃ³s "+time+" instruÃ§Ãµes");
+						logfile.write("Interrompendo "+emExecucao.getNomePrograma()+" apÃ³s "+time+" instruÃ§Ãµes");
 					}
 				}catch(IOException e) {
 					e.printStackTrace();
@@ -111,9 +111,9 @@ public class Escalonador {
 		case "E/S":
 			//precesso de E/S
 			if(time == 0){
-				info = "Interrompendo "+emExecucao.getNomePrograma()+" após "+time+"instruÃ§ao (havia um comando antes da E/S)(havia apenas a E/S)\n";
+				info = "Interrompendo "+emExecucao.getNomePrograma()+" apÃ³s "+time+"instruÃƒÂ§ao (havia um comando antes da E/S)(havia apenas a E/S)\n";
 			}else{
-				info = "Interrompendo "+emExecucao.getNomePrograma()+" após "+time+"instruções (havia "+time+" comando antes da E/S)\n";
+				info = "Interrompendo "+emExecucao.getNomePrograma()+" apÃ³s "+time+"instruÃ§Ãµes (havia "+time+" comando antes da E/S)\n";
 			}
 			listaProcessosBloqueados.add(emExecucao.getNomePrograma());
 			break;
@@ -125,7 +125,7 @@ public class Escalonador {
 			break;
 			
 		default:
-			//atribuiï¿½ï¿½o
+			//atribuiÃ¯Â¿Â½Ã¯Â¿Â½o
 			if(instrucao.charAt(0)=='X'){
 				emExecucao.setX(instrucao.charAt(2));
 			}else{
@@ -155,7 +155,7 @@ public class Escalonador {
 	 * o tempo necessario devem passar para a lista de pronto.
 	 */
 	private static void atualizarListaBloqueados() {
-		LinkedList<String> listaAuxiliar = (LinkedList<String>) ( (LinkedList<String>) listaProcessosBloqueados).clone();
+		LinkedList<String> listaAuxiliar = (LinkedList<String>) ( listaProcessosBloqueados).clone();
 		
 		for(String nomeProcesso: listaAuxiliar){
 			BCP processo= tabelaProcessos.get(nomeProcesso);
