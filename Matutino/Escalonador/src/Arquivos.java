@@ -19,7 +19,7 @@ import java.util.logging.SimpleFormatter;
  * Classe destinada a ler arquivos e criar Processos
  *
  */
-public class LeitorArquivos {
+public class Arquivos {
 	
 	/**
 	 * Le o arquivo que contem as instrucoes destinadas a um Processo, e devolve-as
@@ -28,7 +28,6 @@ public class LeitorArquivos {
 	 * @return
 	 */
 	public static LinkedList<String> lerProcesso (String nomeProcesso) {
-		System.out.println(nomeProcesso);
 		LinkedList<String> processo = new LinkedList<String>();
 		 
 		try {
@@ -57,14 +56,11 @@ public class LeitorArquivos {
 	 * Devolve uma lista ligada com os processos ja criados.
 	 * @return
 	 */
-	public static Map<String, BCP> carregarProcessos() {
-		Map<String, BCP> processos = new HashMap<String, BCP>();
+	public static Map<Integer, BCP> carregarProcessos(BufferedWriter logfile) {
+		Map<Integer, BCP> processos = new HashMap<Integer, BCP>();
 		BCP aux;
 		File folder = new File("src/processos_entrada/");
-		String temp = "";
-		
-		LinkedList<String> files = new LinkedList<String>();
-		System.out.println("Num arqs: "+ folder.listFiles().length);
+
 		for (int i = 1; i < folder.listFiles().length; i++) {
 			String numProcesso = "";
 			if (i < 10) 
@@ -75,17 +71,11 @@ public class LeitorArquivos {
 			LinkedList<String> instrucoes = lerProcesso("src/processos_entrada/" + numProcesso + ".txt");
 			aux = null;
 			if (instrucoes != null) {
-				aux = new BCP(instrucoes.removeFirst(), instrucoes);
-				processos.put(aux.getNomePrograma(), aux);
+				aux = new BCP(instrucoes.removeFirst(), instrucoes, i);
+				escreveLog(logfile, "Carregando " + aux.getNomePrograma());
+				processos.put(aux.getOrdemInicializacaoProcessor(), aux);
 			}
 		
-		}
-		for (final File fileEntry : folder.listFiles()) {
-			if (fileEntry.isFile()) {
-				temp = fileEntry.getName();
-				if (!temp.equals("quantum.txt"))
-					files.add(temp);
-			}
 		}
 		
 		return processos;
@@ -134,6 +124,14 @@ public class LeitorArquivos {
 		try {
 			file.close();
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void escreveLog(BufferedWriter log, String info) {
+		try {
+			log.write(info + "\n");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

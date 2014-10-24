@@ -10,6 +10,12 @@ import java.util.ListIterator;
 public class BCP {
 	
 	private String nomePrograma;
+	
+	/**
+	 * Num de ordem em que o processo foi carregado
+	 */
+	private int ordemInicializacaoProcessor;
+	
 	/**
 	 * Contador do programa, que e um registrador de uso especifico
 	 */
@@ -29,6 +35,11 @@ public class BCP {
 	 * Instrucoes que devem ser executadas para esse processo
 	 */
 	public LinkedList<String> instrucoes = new LinkedList<String> ();
+	
+	/**
+	 * Prioridade do processo
+	 */
+	private int prioridade = 0 ;
 	
 	/**
 	 * Avisa se a instrucao anterior entrou para a conta do PC. Pois caso tenha 
@@ -53,13 +64,14 @@ public class BCP {
 	 * e das instrucoes, com um array contendo as instrucoes
 	 * @param instrucoes
 	 */
-	public BCP(String nomePrograma, LinkedList<String> instrucoes) {
+	public BCP(String nomePrograma, LinkedList<String> instrucoes, int ordemInicializacao) {
 		this.nomePrograma = nomePrograma;
 		this.PC = 0;
 		this.tempoEsperaBloqueio = 2;
 		this.anteriormenteBloqueado = 0;
 		this.instrucoes = instrucoes;
 		this.bloqueado = false;
+		this.ordemInicializacaoProcessor = ordemInicializacao;
 	}
 	
 	/**
@@ -152,6 +164,22 @@ public class BCP {
 
 	public void setBloqueado(Boolean bloqueado) {
 		this.bloqueado = bloqueado;
+	}
+
+	public int getOrdemInicializacaoProcessor() {
+		return ordemInicializacaoProcessor;
+	}
+
+	public void setOrdemInicializacaoProcessor(int ordemInicializacaoProcessor) {
+		this.ordemInicializacaoProcessor = ordemInicializacaoProcessor;
+	}
+
+	public int getPrioridade() {
+		return prioridade;
+	}
+
+	public void setPrioridade(int prioridade) {
+		this.prioridade = prioridade;
 	}
 
 }
