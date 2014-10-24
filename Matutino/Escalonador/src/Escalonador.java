@@ -5,10 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 public class Escalonador {
 	private static BufferedWriter logfile;
@@ -43,16 +41,6 @@ public class Escalonador {
 		quantum = LeitorArquivos.carregarQuantum(); 
 		logfile = LeitorArquivos.inicializaLogFile("log" + quantum);
 		
-		Set<String> processos = tabelaProcessos.keySet();
-		for(String nome: processos){
-
-			//Exemplo de como add log na file
-			try {
-				logfile.write(nome+'\n');
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}	
 		escalonar();
 		LeitorArquivos.closeLogFile(logfile);
 	}
@@ -155,7 +143,8 @@ public class Escalonador {
 	 * o tempo necessario devem passar para a lista de pronto.
 	 */
 	private static void atualizarListaBloqueados() {
-		LinkedList<String> listaAuxiliar = (LinkedList<String>) ( listaProcessosBloqueados).clone();
+		LinkedList<String> listaAuxiliar = new LinkedList<String>();
+		listaAuxiliar = (LinkedList<String>) listaProcessosBloqueados.clone();
 		
 		for(String nomeProcesso: listaAuxiliar){
 			BCP processo= tabelaProcessos.get(nomeProcesso);

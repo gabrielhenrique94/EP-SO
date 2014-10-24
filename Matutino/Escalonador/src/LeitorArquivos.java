@@ -28,6 +28,7 @@ public class LeitorArquivos {
 	 * @return
 	 */
 	public static LinkedList<String> lerProcesso (String nomeProcesso) {
+		System.out.println(nomeProcesso);
 		LinkedList<String> processo = new LinkedList<String>();
 		 
 		try {
@@ -63,7 +64,22 @@ public class LeitorArquivos {
 		String temp = "";
 		
 		LinkedList<String> files = new LinkedList<String>();
+		System.out.println("Num arqs: "+ folder.listFiles().length);
+		for (int i = 1; i < folder.listFiles().length; i++) {
+			String numProcesso = "";
+			if (i < 10) 
+				numProcesso = "0" + i;
+			else 
+				numProcesso = Integer.toString(i);
+			
+			LinkedList<String> instrucoes = lerProcesso("src/processos_entrada/" + numProcesso + ".txt");
+			aux = null;
+			if (instrucoes != null) {
+				aux = new BCP(instrucoes.removeFirst(), instrucoes);
+				processos.put(aux.getNomePrograma(), aux);
+			}
 		
+		}
 		for (final File fileEntry : folder.listFiles()) {
 			if (fileEntry.isFile()) {
 				temp = fileEntry.getName();
@@ -72,19 +88,6 @@ public class LeitorArquivos {
 			}
 		}
 		
-		Collections.sort(files);
-		
-		ListIterator<String> listIterator = files.listIterator();
-		
-		while (listIterator.hasNext()) {
-            LinkedList<String> instrucoes = lerProcesso("src/processos_entrada/" + listIterator.next());
-			aux = null;
-			if (instrucoes != null) {
-				aux = new BCP(instrucoes.removeFirst(), instrucoes);
-				processos.put(aux.getNomePrograma(), aux);
-			}
-        }
-
 		return processos;
 	}
 	
