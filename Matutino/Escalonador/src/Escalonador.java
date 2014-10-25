@@ -110,13 +110,15 @@ public class Escalonador {
 				
 			default:
 				//atribuicao
+				
 				System.out.println("DEFAULT: " + instrucao);
-				if (instrucao.indexOf('X') != -1) {
-					int x = Integer.parseInt(instrucao.replace("X=", ""));
-					System.out.println(x);
+				String[] atribuicao = instrucao.split("=");
+				if (atribuicao[0]=="X") {
+					int x = Integer.parseInt(atribuicao[1]);
+					System.out.println(+x);
 					emExecucao.setX(x);
 				} else {
-					int y = Integer.parseInt(instrucao.replace("Y=", ""));
+					int y = Integer.parseInt(""+instrucao.charAt(2));
 					System.out.println(y);
 					emExecucao.setY(y);
 				}
