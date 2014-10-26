@@ -1,4 +1,3 @@
-
 import java.io.BufferedWriter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,6 +7,7 @@ import java.util.Queue;
 import java.util.Set;
 
 public class Escalonador {
+	private static Estatistica estatistica = new Estatistica();
 	
 	private static BufferedWriter logfile;
 	private static Queue <String> filaProcessosProntos = new LinkedList<String>();
@@ -46,6 +46,7 @@ public class Escalonador {
 		quantum = Arquivos.carregarQuantum(); 
 		logfile = Arquivos.inicializaLogFile("log" + quantum);
 		Arquivos.carregarProcessos(logfile, tabelaProcessos, filaProcessosProntos);
+		estatistica.setNumeroDeProcessos(tabelaProcessos.size());
 		printlist(filaProcessosProntos.iterator());
 		
 		System.out.println("\n ------------------------------------------------------------ \n \n");
@@ -54,6 +55,10 @@ public class Escalonador {
 		
 		
 		escalonar();
+		Arquivos.escreveLog(logfile, "MEDIA DE TROCAS: "+String.format("%.2f", estatistica.mediaTrocas()));
+		Arquivos.escreveLog(logfile, "MEDIA DE INSTRUCOES: "+String.format("%.2f", estatistica.mediaInstrucoes()));
+		Arquivos.escreveLog(logfile, "QUANTUM: "+quantum);
+		
 		Arquivos.closeLogFile(logfile);
 	}
 
@@ -85,7 +90,7 @@ public class Escalonador {
 					filaProcessosProntos.offer(emExecucao.getNomePrograma());
 					emExecucao = null;
 				}
-				
+				estatistica.addInstrucoes(time);
 			}
 			atualizarListaBloqueados();
 					
@@ -183,8 +188,5 @@ public class Escalonador {
 			emExecucao = null;
 		}
 	}
-	
-	
-	
 
 }

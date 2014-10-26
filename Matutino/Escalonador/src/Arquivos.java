@@ -104,7 +104,6 @@ public class Arquivos {
 	public static BufferedWriter inicializaLogFile(String name) {
 
 	    try {
-	    	//File f = new File("src/saida/" + name + ".txt");
 	    	BufferedWriter out = new BufferedWriter(new FileWriter("src/saida/" + name + ".txt"));
 	    	return out;
  
