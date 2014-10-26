@@ -6,30 +6,40 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 public class Escalonador {
 	
 	private static BufferedWriter logfile;
-	private static LinkedList <Integer> listaProcessosProntos = new LinkedList<Integer>();
-	private static LinkedList <Integer> listaProcessosBloqueados = new LinkedList<Integer>();
-	private static Map<Integer, BCP> tabelaProcessos = new HashMap<Integer, BCP>();
+	private static Queue <String> filaProcessosProntos = new LinkedList<String>();
+	private static Queue <String> filaProcessosBloqueados = new LinkedList<String>();
+	private static Map<String, BCP> tabelaProcessos = new HashMap<String, BCP>();
 	private static BCP emExecucao = null;
 	private static int time = 0;
 	private static  int quantum;
 	
 	public static void printMap(){
-		Set<Integer> ordemInicial = tabelaProcessos.keySet();
-		for(Integer ordem: ordemInicial){
+		Set<String> ordemInicial = tabelaProcessos.keySet();
+		for(String ordem: ordemInicial){
 			System.out.println("-"+ordem+"-"+tabelaProcessos.get(ordem).getNomePrograma() );
 		}
 	}
 	
-	public static void printlist(Iterator<Integer> it){
+	public static void imprimeArquivos(){
+		Set<String> arqs = tabelaProcessos.keySet();
+		for(String arq: arqs){
+			printlist((tabelaProcessos.get(arq)).instrucoes.iterator());
+			System.out.println(" ------------------------------------------------------------");
+		}
+	}
+	
+	public static void printlist(Iterator<String> it){
 		while(it.hasNext()){
 			System.out.println("-"+it.next()+"-" );
 		}
 	}
+
 	
 	/**
 	 * Funcao que faz todas as chamadas de inicializacao do escalonador.
@@ -37,11 +47,12 @@ public class Escalonador {
 	public static void escalonarProcessos() {
 		quantum = Arquivos.carregarQuantum(); 
 		logfile = Arquivos.inicializaLogFile("log" + quantum);
-		tabelaProcessos.putAll(Arquivos.carregarProcessos(logfile));
-		listaProcessosProntos.addAll(tabelaProcessos.keySet());
-		Collections.sort(listaProcessosProntos);
-		printlist(listaProcessosProntos.iterator());
+		tabelaProcessos.putAll(Arquivos.carregarProcessos(logfile, filaProcessosProntos));
+		printlist(filaProcessosProntos.iterator());
 		
+		System.out.println("\n ------------------------------------------------------------ \n \n");
+		
+		imprimeArquivos();	
 		
 		
 		escalonar();
@@ -49,15 +60,15 @@ public class Escalonador {
 	}
 
 	private static void escalonar() {
-		Integer ordemProcesso= null;
+		String nomeProcesso;
 		System.out.println("Escalonando");
 		int x = 0;
 		
 		while(!tabelaProcessos.isEmpty() &&  x<40) {
 			time = 0;
-			if (!listaProcessosProntos.isEmpty()) {
-				ordemProcesso = ((LinkedList<Integer>) listaProcessosProntos).removeFirst();
-				emExecucao = tabelaProcessos.get(ordemProcesso);
+			if (!filaProcessosProntos.isEmpty()) {
+				nomeProcesso = filaProcessosProntos.poll();
+				emExecucao = tabelaProcessos.get(nomeProcesso);
 				Arquivos.escreveLog(logfile, "Executando " + emExecucao.getNomePrograma());
 				
 				String info = null;
@@ -70,8 +81,10 @@ public class Escalonador {
 				
 				if (info != null) 
 					Arquivos.escreveLog(logfile, info);
-				
-				Arquivos.escreveLog(logfile, "Interrompendo " + emExecucao.getNomePrograma() + " após " + time + " instruções");
+				else{
+					Arquivos.escreveLog(logfile, "Interrompendo " + emExecucao.getNomePrograma() + " após " + time + " instruções");
+					
+					
 				
 			} else {
 				atualizarListaBloqueados();
@@ -81,37 +94,49 @@ public class Escalonador {
 		
 	}
 	
-	private static String executaInstrucao(String instrucao) {
-		String info = null;
+	private static boolean executaInstrucao(String instrucao) {
+		Boolean continua = true;
 		
 		switch (instrucao) {
 			case "COM":
+				System.out.println("Teste "+emExecucao.getOrdemInicializacaoProcessor()+" COM");
 				//executa o comando
 				time++;
 				break;
 				
 			case "E/S":
-				//processo de E/S
-				if(time < 2) 
-					info = "Interrompendo " + emExecucao.getNomePrograma() + " após " + time + " instruçao";
-				else
-					info = "Interrompendo " + emExecucao.getNomePrograma() + " após " + time + " instruções";
 				
-				listaProcessosBloqueados.add(emExecucao.getOrdemInicializacaoProcessor());
+				if(emExecucao.getAnteriormenteBloqueado()==0){
+						
+					System.out.println(emExecucao.getNomePrograma()+" E/S");
+					//processo de E/S
+					
+					emExecucao.setBloqueado(true);
+					
+					emExecucao.setAnteriormenteBloqueado(1);
+						
+					filaProcessosBloqueados.offer(emExecucao.getNomePrograma());
+					
+					continua = false;
+				}
+				else{
+					time++;
+					emExecucao.setAnteriormenteBloqueado(0);
+				}
 				break;
 				
 			case "SAIDA":
 				//quandoo processo termina
-				System.out.println(emExecucao.getOrdemInicializacaoProcessor());
-				tabelaProcessos.remove(emExecucao.getOrdemInicializacaoProcessor());
+				System.out.println(emExecucao.getNomePrograma()+" SAIDA");
+				tabelaProcessos.remove(emExecucao.getNomePrograma());
 				printMap();
-				
+				continua = false;
 				break;
 				
 			default:
 				//atribuicao
 				
-				System.out.println("DEFAULT: " + instrucao);
+				System.out.println(emExecucao.getNomePrograma()+" XouY");
 				String[] atribuicao = instrucao.split("=");
 				if (atribuicao[0]=="X") {
 					int x = Integer.parseInt(atribuicao[1]);
@@ -126,7 +151,7 @@ public class Escalonador {
 				break;
 		}
 		
-		return info;
+		return continua;
 	}
 
 	/**
@@ -135,10 +160,10 @@ public class Escalonador {
 	 * tipo de chamada para o mesmo.
 	 */
 	private static void passarBloqueadoParaPronto(BCP processo) {
-		processo.setAnteriormenteBloqueado(1);
+		processo.setAnteriormenteBloqueado(0);
 		processo.setBloqueado(false);
 		processo.setTempoEsperaBloqueio(2);
-		listaProcessosProntos.add(processo.getOrdemInicializacaoProcessor());
+		filaProcessosProntos.offer(processo.getNomePrograma());
 	}
 	
 	/**
@@ -147,8 +172,8 @@ public class Escalonador {
 	 * o tempo necessario devem passar para a lista de pronto.
 	 */
 	private static void atualizarListaBloqueados() {
-		LinkedList<Integer> listaAuxiliar = new LinkedList<Integer>();
-		listaAuxiliar = (LinkedList<Integer>) listaProcessosBloqueados.clone();
+		Queue<String> filaAuxiliar = new LinkedList<String>();
+		filaAuxiliar = ((LinkedList<String>) filaProcessosBloqueados).clone();
 		
 		for(Integer ordemProcesso: listaAuxiliar){
 			BCP processo= tabelaProcessos.get(ordemProcesso);

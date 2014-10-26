@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Queue;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -56,13 +57,13 @@ public class Arquivos {
 	 * Devolve uma lista ligada com os processos ja criados.
 	 * @return
 	 */
-	public static Map<Integer, BCP> carregarProcessos(BufferedWriter logfile) {
-		Map<Integer, BCP> processos = new HashMap<Integer, BCP>();
+	public static Map<String, BCP> carregarProcessos(BufferedWriter logfile, Queue<String> fila) {
+		Map<String, BCP> processos = new HashMap<String, BCP>();
 		BCP aux;
 		File folder = new File("src/processos_entrada/");
 
 		for (int i = 1; i < folder.listFiles().length; i++) {
-			String numProcesso = "";
+			String numProcesso;
 			if (i < 10) 
 				numProcesso = "0" + i;
 			else 
@@ -71,9 +72,10 @@ public class Arquivos {
 			LinkedList<String> instrucoes = lerProcesso("src/processos_entrada/" + numProcesso + ".txt");
 			aux = null;
 			if (instrucoes != null) {
-				aux = new BCP(instrucoes.removeFirst(), instrucoes, i);
+				aux = new BCP(instrucoes.removeFirst(), instrucoes);
 				escreveLog(logfile, "Carregando " + aux.getNomePrograma());
-				processos.put(aux.getOrdemInicializacaoProcessor(), aux);
+				processos.put(aux.getNomePrograma(), aux);
+				fila.offer(aux.getNomePrograma());
 			}
 		
 		}

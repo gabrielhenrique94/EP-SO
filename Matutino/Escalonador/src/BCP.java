@@ -12,11 +12,6 @@ public class BCP {
 	private String nomePrograma;
 	
 	/**
-	 * Num de ordem em que o processo foi carregado
-	 */
-	private int ordemInicializacaoProcessor;
-	
-	/**
 	 * Contador do programa, que e um registrador de uso especifico
 	 */
 	private int PC;
@@ -39,14 +34,14 @@ public class BCP {
 	/**
 	 * Prioridade do processo
 	 */
-	private int prioridade = 0 ;
+	private int prioridade = 1 ;
 	
 	/**
 	 * Avisa se a instrucao anterior entrou para a conta do PC. Pois caso tenha 
 	 * tido uma E/S a instrucao nao entra na contagem e o processo e bloqueado
 	 * 0 -> entrou para conta, 1 -> nao entrou para a conta. 
 	 */
-	private int anteriormenteBloqueado; 
+	private int anteriormenteBloqueado = 0; 
 	
 	/**
 	 * Quando um processo e bloqueado ele recebe true para essa variavel
@@ -64,14 +59,13 @@ public class BCP {
 	 * e das instrucoes, com um array contendo as instrucoes
 	 * @param instrucoes
 	 */
-	public BCP(String nomePrograma, LinkedList<String> instrucoes, int ordemInicializacao) {
+	public BCP(String nomePrograma, LinkedList<String> instrucoes) {
 		this.nomePrograma = nomePrograma;
 		this.PC = 0;
 		this.tempoEsperaBloqueio = 2;
 		this.anteriormenteBloqueado = 0;
 		this.instrucoes = instrucoes;
 		this.bloqueado = false;
-		this.ordemInicializacaoProcessor = ordemInicializacao;
 	}
 	
 	/**
@@ -164,14 +158,6 @@ public class BCP {
 
 	public void setBloqueado(Boolean bloqueado) {
 		this.bloqueado = bloqueado;
-	}
-
-	public int getOrdemInicializacaoProcessor() {
-		return ordemInicializacaoProcessor;
-	}
-
-	public void setOrdemInicializacaoProcessor(int ordemInicializacaoProcessor) {
-		this.ordemInicializacaoProcessor = ordemInicializacaoProcessor;
 	}
 
 	public int getPrioridade() {
