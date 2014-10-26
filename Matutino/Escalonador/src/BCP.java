@@ -1,6 +1,4 @@
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * 
@@ -14,7 +12,7 @@ public class BCP {
 	/**
 	 * Contador do programa, que e um registrador de uso especifico
 	 */
-	private int PC;
+	private int PC = 0;
 	
 	/**
 	 * Registrador de uso geral
@@ -122,10 +120,7 @@ public class BCP {
 	 * @return
 	 */
 	public String getProximaInstrucao() {
-		if (instrucoes.size() > 0) 
-			return instrucoes.removeFirst();
-		
-		return "";
+		return instrucoes.get(PC);
 	}
 
 	public int getTempoEsperaBloqueio() {

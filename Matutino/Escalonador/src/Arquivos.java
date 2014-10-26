@@ -4,15 +4,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Queue;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+
 
 
 /**
@@ -57,8 +52,7 @@ public class Arquivos {
 	 * Devolve uma lista ligada com os processos ja criados.
 	 * @return
 	 */
-	public static Map<String, BCP> carregarProcessos(BufferedWriter logfile, Queue<String> fila) {
-		Map<String, BCP> processos = new HashMap<String, BCP>();
+	public static void carregarProcessos(BufferedWriter logfile,  Map<String, BCP> tabela, Queue<String> fila) {
 		BCP aux;
 		File folder = new File("src/processos_entrada/");
 
@@ -74,13 +68,12 @@ public class Arquivos {
 			if (instrucoes != null) {
 				aux = new BCP(instrucoes.removeFirst(), instrucoes);
 				escreveLog(logfile, "Carregando " + aux.getNomePrograma());
-				processos.put(aux.getNomePrograma(), aux);
+				tabela.put(aux.getNomePrograma(), aux);
 				fila.offer(aux.getNomePrograma());
 			}
 		
 		}
-		
-		return processos;
+
 	}
 	
 	/**
@@ -111,7 +104,7 @@ public class Arquivos {
 	public static BufferedWriter inicializaLogFile(String name) {
 
 	    try {
-	    	File f = new File("src/saida/" + name + ".txt");
+	    	//File f = new File("src/saida/" + name + ".txt");
 	    	BufferedWriter out = new BufferedWriter(new FileWriter("src/saida/" + name + ".txt"));
 	    	return out;
  
