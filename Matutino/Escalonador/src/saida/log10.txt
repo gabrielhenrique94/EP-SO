@@ -1,0 +1,97 @@
+Carregando TESTE-1
+Carregando TESTE-2
+Carregando TESTE-3
+Carregando TESTE-4
+Carregando TESTE-5
+Carregando TESTE-6
+Carregando TESTE-7
+Carregando TESTE-8
+Carregando TESTE-9
+Carregando TESTE-10
+Executando TESTE-1
+Interrompendo TESTE-1 apos 4 instrucoes
+Executando TESTE-2
+Interrompendo TESTE-2 apos 4 instrucoes
+Executando TESTE-3
+Interrompendo TESTE-3 apos 10 instrucoes
+Executando TESTE-4
+Interrompendo TESTE-4 apos 1 instrucoes
+Executando TESTE-5
+Interrompendo TESTE-5 apos 1 instrucoes
+Executando TESTE-6
+Interrompendo TESTE-6 apos 3 instrucoes
+Executando TESTE-7
+Interrompendo TESTE-7 apos 3 instrucoes
+Executando TESTE-8
+Interrompendo TESTE-8 apos 10 instrucoes
+Executando TESTE-9
+Interrompendo TESTE-9 apos 2 instrucoes
+Executando TESTE-10
+Interrompendo TESTE-10 apos 4 instrucoes
+Executando TESTE-3
+Interrompendo TESTE-3 apos 4 instrucoes
+TESTE-3 terminado. X=0. Y=4
+Executando TESTE-1
+Interrompendo TESTE-1 apos 4 instrucoes
+Executando TESTE-2
+Interrompendo TESTE-2 apos 5 instrucoes
+Executando TESTE-4
+Interrompendo TESTE-4 apos 2 instrucoes
+Executando TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+Executando TESTE-8
+Interrompendo TESTE-8 apos 10 instrucoes
+Executando TESTE-6
+Interrompendo TESTE-6 apos 7 instrucoes
+Executando TESTE-7
+Interrompendo TESTE-7 apos 9 instrucoes
+Executando TESTE-9
+Interrompendo TESTE-9 apos 10 instrucoes
+Executando TESTE-10
+Interrompendo TESTE-10 apos 2 instrucoes
+TESTE-10 terminado. X=0. Y=0
+Executando TESTE-1
+Interrompendo TESTE-1 apos 2 instrucoes
+TESTE-1 terminado. X=0. Y=2
+Executando TESTE-2
+Interrompendo TESTE-2 apos 5 instrucoes
+Executando TESTE-8
+Interrompendo TESTE-8 apos 1 instrucoes
+TESTE-8 terminado. X=0. Y=1
+Executando TESTE-4
+Interrompendo TESTE-4 apos 2 instrucoes
+Executando TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+Executando TESTE-9
+Interrompendo TESTE-9 apos 1 instrucoes
+Executando TESTE-6
+Interrompendo TESTE-6 apos 3 instrucoes
+Executando TESTE-7
+Interrompendo TESTE-7 apos 2 instrucoes
+TESTE-7 terminado. X=0. Y=3
+Executando TESTE-2
+Interrompendo TESTE-2 apos 7 instrucoes
+TESTE-2 terminado. X=0. Y=1
+Executando TESTE-4
+Interrompendo TESTE-4 apos 2 instrucoes
+Executando TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+Executando TESTE-9
+Interrompendo TESTE-9 apos 2 instrucoes
+TESTE-9 terminado. X=0. Y=0
+Executando TESTE-6
+Interrompendo TESTE-6 apos 2 instrucoes
+TESTE-6 terminado. X=0. Y=5
+Executando TESTE-4
+Interrompendo TESTE-4 apos 3 instrucoes
+Executando TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+Executando TESTE-4
+Interrompendo TESTE-4 apos 2 instrucoes
+TESTE-4 terminado. X=0. Y=91
+Executando TESTE-5
+Interrompendo TESTE-5 apos 2 instrucoes
+TESTE-5 terminado. X=0. Y=5
+MEDIA DE TROCAS: 3.60
+MEDIA DE INSTRUCOES: 3.76
+QUANTUM: 10

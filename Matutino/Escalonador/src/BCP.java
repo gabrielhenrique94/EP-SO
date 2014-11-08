@@ -1,4 +1,4 @@
-/* Escola de Artes Ciências e Humanidades
+/** Escola de Artes Ciências e Humanidades
  * da Universidade de Sao Paulo (EACH-USP)
  * 
  * Curso de Sistemas de Informação (Matutino)
@@ -27,13 +27,30 @@ import java.util.LinkedList;
  * - O estado do processo (status)
  * - Ponteiro e lista com as instruções de rotina do programa
  * - Prioridade do processo
- * 
- *
  */
 public class BCP {
 
+	//************************ CONSTRUTOR ************************//
+	
+	/**
+	 * Construtor atribui valores padrão:
+	 * > PC = 0;
+	 * > Espera de E/S = 2;
+	 * > Status do processo = PRONTO;  
+	 * @param nomePrograma
+	 * @param instrucoes
+	 */
+	public BCP(String nomePrograma, LinkedList<String> instrucoes) {
+		this.nomePrograma = nomePrograma;
+		PC = 0;
+		tempoEsperaBloqueio = 2;
+		anteriormenteBloqueado = 0;
+		this.instrucoes = instrucoes;
+		status = TipoStatus.PRONTO;
+	}
 
-
+	//********************* VARIAVEIS GLOBAIS *********************//
+	
     /**
      * Nome do processo definido pelo arquivo de entrada na primeira linha
      */
@@ -84,29 +101,10 @@ public class BCP {
 	 */
 	private int tempoEsperaBloqueio = 2;
 
-	/**
-	 * Construtor atribui valores padrão:
-	 * - PC = 0
-	 * - Espera de E/S = 2
-	 * - Status do processo = PRONTO
-	 *  
-	 * @param nomePrograma
-	 * @param instrucoes
-	 */
-	public BCP(String nomePrograma, LinkedList<String> instrucoes) {
-		this.nomePrograma = nomePrograma;
-		PC = 0;
-		tempoEsperaBloqueio = 2;
-		anteriormenteBloqueado = 0;
-		this.instrucoes = instrucoes;
-		status = TipoStatus.PRONTO;
-	}
-
-
-	//*  Getters e Setters   *//
+	//********************* METODOS GETTERS E SETTERS *********************//
 	
 	/**
-	 * Retorna o valor atual do registrador (X) do tipo inteiro
+	 * Retorna o valor atual do registrador (X) do tipo inteiro.
 	 * @return X
 	 */
 	public int getX() {
@@ -114,7 +112,7 @@ public class BCP {
 	}
 
 	/**
-	 * Atribui valor ao registrador X
+	 * Atribui valor ao registrador X.
 	 * @param x - valor inteiro que será atribuido
 	 */
 	public void setX(int x) {
@@ -122,7 +120,7 @@ public class BCP {
 	}
 
 	/**
-	 * Retorna o valor atual do registrador (Y) do tipo inteiro
+	 * Retorna o valor atual do registrador (Y) do tipo inteiro.
 	 * @return Y
 	 */
 	public int getY() {
@@ -130,7 +128,7 @@ public class BCP {
 	}
 
 	/**
-	 * Atribui valor ao registrador Y
+	 * Atribui valor ao registrador Y.
 	 * @param y - valor inteiro que será atribuido
 	 */
 	public void setY(int y) {
@@ -138,7 +136,7 @@ public class BCP {
 	}
 
 	/**
-	 * Retorna o valor atual Contador de Programa (PC) do tipo inteiro
+	 * Retorna o valor atual Contador de Programa (PC) do tipo inteiro.
 	 * @return PC
 	 */
 	public int getPC() {
@@ -146,17 +144,71 @@ public class BCP {
 	}
 
 	/**
-	 * Atribui valor ao Contador de Programa (PC)
+	 * Atribui valor ao Contador de Programa (PC).
 	 * @param pc - valor inteiro que será atribuido
 	 */
 	public void setPC(int pc) {
 		PC = pc;
 	}
 
+	/**
+	 * Retorna a instrucao na linha i do arquivo do processo.
+	 * @param i - indice da instrucao
+	 * @return instrucao - de indice 'i' do processo
+	 */
 	public String getInstrucao(int i) {
 		return instrucoes.get(i);
 	}
 
+	/**
+	 * Retorna uma string com nome do programa.
+	 * @return nomePrograma
+	 */
+	public String getNomePrograma() {
+		return nomePrograma;
+	}
+
+	/**
+	 * Defini um nome ao processo,
+	 * funcionando como uma identificação única.
+	 * @param nomePrograma
+	 */
+	public void setNomePrograma(String nomePrograma) {
+		this.nomePrograma = nomePrograma;
+	}
+
+	/**
+	 * Retorna a prioridade do processo.
+	 * @return prioridade - Quanto maior o valor inteiro maior a prioridade.
+	 */
+	public int getPrioridade() {
+		return prioridade;
+	}
+	
+	/**
+	 * Defini a prioridade do processo.
+	 * @param prioridade - Quanto maior o valor inteiro maior a prioridade.
+	 */
+	public void setPrioridade(int prioridade) {
+		this.prioridade = prioridade;
+	}
+	
+	/**
+	 * Retorna estado atual do processo.
+	 * @return status - Podendo ele ser EXECUTANDO, BLOQUEADO ou PRONTO
+	 */
+	public TipoStatus getStatus(){
+		return status;
+	}
+	
+	/**
+	 * Atribui um novo estado ao processo.
+	 * @param tipo - Podendo ele ser EXECUTANDO, BLOQUEADO ou PRONTO.
+	 */
+	public void setStatus(TipoStatus tipo){
+		status = tipo;
+	}
+	
 	public int getTempoEsperaBloqueio() {
 		return tempoEsperaBloqueio;
 	}
@@ -171,30 +223,6 @@ public class BCP {
 
 	public void setAnteriormenteBloqueado(int anteriormenteBloqueado) {
 		this.anteriormenteBloqueado = anteriormenteBloqueado;
-	}
-
-	public String getNomePrograma() {
-		return nomePrograma;
-	}
-
-	public void setNomePrograma(String nomePrograma) {
-		this.nomePrograma = nomePrograma;
-	}
-
-	public int getPrioridade() {
-		return prioridade;
-	}
-
-	public void setPrioridade(int prioridade) {
-		this.prioridade = prioridade;
-	}
-
-	public TipoStatus getStatus(){
-		return status;
-	}
-
-	public void setStatus(TipoStatus tipo){
-		status = tipo;
 	}
 
 }
