@@ -6,6 +6,8 @@ import java.util.LinkedList;
  *
  */
 public class BCP {
+	  
+    private TipoStatus status;
 	
 	private String nomePrograma;
 	
@@ -42,10 +44,6 @@ public class BCP {
 	private int anteriormenteBloqueado = 0; 
 	
 	/**
-	 * Quando um processo e bloqueado ele recebe true para essa variavel
-	 */
-	private Boolean bloqueado;
-	/**
 	 * Quando o processo for bloqueado, ele deve esperar outros dois processos executarem para retornar.
 	 * A variavel e entao utilizada quando o processo e bloqueado.
 	 */
@@ -53,74 +51,47 @@ public class BCP {
 	
 	/**
 	 * Construtor da classe.
-	 * Seta os parametros PC com 0, pois ainda não comecou a contagem do programa
-	 * e das instrucoes, com um array contendo as instrucoes
+	 * @param nomePrograma
 	 * @param instrucoes
 	 */
 	public BCP(String nomePrograma, LinkedList<String> instrucoes) {
 		this.nomePrograma = nomePrograma;
-		this.PC = 0;
-		this.tempoEsperaBloqueio = 2;
-		this.anteriormenteBloqueado = 0;
+		PC = 0;
+		tempoEsperaBloqueio = 2;
+		anteriormenteBloqueado = 0;
 		this.instrucoes = instrucoes;
-		this.bloqueado = false;
+		status = TipoStatus.PRONTO;
 	}
 	
-	/**
-	 * Get da variavel x
-	 * @return
-	 */
+	
+	//*  Getters e Setters   *//
+	
 	public int getX() {
 		return X;
 	}
 
-	/**
-	 * Set da variavel x
-	 * @param x
-	 */
 	public void setX(int x) {
 		X = x;
 	}
 
-	/**
-	 * Get da variavel y
-	 * @return
-	 */
 	public int getY() {
 		return Y;
 	}
 
-	/**
-	 * Set da variavel y
-	 * @param y
-	 */
 	public void setY(int y) {
 		Y = y;
 	}
-
-	/**
-	 * Get da variavel PC
-	 * @return
-	 */
+	
 	public int getPC() {
 		return PC;
 	}
 
-	/**
-	 * Set da variavel PC, feio de forma diferente, nao substituindo um valor 
-	 * pelo outro, mas sim somando o valor enviado ao valor ja fixado em PC
-	 * @param soma
-	 */
-	public void setPC(int soma) {
-		PC = PC + soma;
+	public void setPC(int pc) {
+		PC = pc;
 	}
 	
-	/**
-	 * Retorna a proxima instrucao do Processo, que e uma String
-	 * @return
-	 */
-	public String getProximaInstrucao() {
-		return instrucoes.get(PC);
+	public String getInstrucao(int i) {
+		return instrucoes.get(i);
 	}
 
 	public int getTempoEsperaBloqueio() {
@@ -147,14 +118,6 @@ public class BCP {
 		this.nomePrograma = nomePrograma;
 	}
 
-	public Boolean getBloqueado() {
-		return bloqueado;
-	}
-
-	public void setBloqueado(Boolean bloqueado) {
-		this.bloqueado = bloqueado;
-	}
-
 	public int getPrioridade() {
 		return prioridade;
 	}
@@ -163,4 +126,12 @@ public class BCP {
 		this.prioridade = prioridade;
 	}
 
+	public TipoStatus getStatus(){
+		return status;
+	}
+	
+	public void setStatus(TipoStatus tipo){
+		status = tipo;
+	}
+	
 }

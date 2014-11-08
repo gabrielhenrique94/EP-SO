@@ -16,6 +16,8 @@ public class Escalonador {
 	private static BCP emExecucao = null;
 	private static int time = 0;
 	private static  int quantum;
+	private static int PC;
+	
 	
 	public static void printMap(){
 		Set<String> processos = tabelaProcessos.keySet();
@@ -65,28 +67,29 @@ public class Escalonador {
 	private static void escalonar() {
 		String nomeProcesso;
 		System.out.println("Escalonando");
-		//int x = 0;
-		
+			
 		while(!tabelaProcessos.isEmpty()) {
 			time = 0;
 			if (!filaProcessosProntos.isEmpty()) {
 				nomeProcesso = filaProcessosProntos.poll();
 				emExecucao = tabelaProcessos.get(nomeProcesso);
+				emExecucao.setStatus(TipoStatus.EXECUTANDO);
+				PC = emExecucao.getPC();
 				Arquivos.escreveLog(logfile, "Executando " + emExecucao.getNomePrograma());
 				
 				Boolean continua = true;
 				while ( continua && time < quantum) {
-
-					String instrucao = emExecucao.getProximaInstrucao();
+					String instrucao = emExecucao.getInstrucao(PC);
 					continua = executaInstrucao(instrucao);
-					
 				}
 				Arquivos.escreveLog(logfile, "Interrompendo " + emExecucao.getNomePrograma() + " apos " + time + " instrucoes");
 	
+				emExecucao.setPC(PC);
 				if(!tabelaProcessos.containsKey(emExecucao.getNomePrograma())){
 					Arquivos.escreveLog(logfile, emExecucao.getNomePrograma()+" terminado. X="+emExecucao.getX()+". Y="+emExecucao.getY());
 					emExecucao = null;
 				}else if(continua){
+					emExecucao.setStatus(TipoStatus.PRONTO);
 					filaProcessosProntos.offer(emExecucao.getNomePrograma());
 					emExecucao = null;
 				}
@@ -105,7 +108,7 @@ public class Escalonador {
 			case "COM":
 				System.out.println(emExecucao.getNomePrograma()+" COM");
 				//executa o comando
-				emExecucao.setPC(1);
+				PC++;
 				time++;
 				break;
 				
@@ -116,13 +119,13 @@ public class Escalonador {
 					System.out.println(emExecucao.getNomePrograma()+" bloq");
 					//processo de E/S
 					
-					emExecucao.setBloqueado(true);
+					emExecucao.setStatus(TipoStatus.BLOQUEADO);
 					
 					emExecucao.setAnteriormenteBloqueado(1);
 					
 					continua = false;
 				}else{
-					emExecucao.setPC(1);
+					PC++;
 					System.out.println(emExecucao.getNomePrograma()+" E/S");
 					time++;
 					emExecucao.setAnteriormenteBloqueado(0);
@@ -135,11 +138,12 @@ public class Escalonador {
 				tabelaProcessos.remove(emExecucao.getNomePrograma());
 				//printMap();
 				continua = false;
+				time++;
 				break;
 				
 			default:
 				//atribuicao
-				emExecucao.setPC(1);
+				PC++;
 				String[] atribuicao = instrucao.split("=");
 				int valor = Integer.parseInt(atribuicao[1]);
 				if (atribuicao[0]=="X") 
@@ -162,7 +166,7 @@ public class Escalonador {
 	 */
 	private static void passarBloqueadoParaPronto(BCP processo) {
 		processo.setAnteriormenteBloqueado(1);
-		processo.setBloqueado(false);
+		processo.setStatus(TipoStatus.PRONTO);
 		processo.setTempoEsperaBloqueio(2);
 		filaProcessosProntos.offer(processo.getNomePrograma());
 	}
