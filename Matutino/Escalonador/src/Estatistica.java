@@ -1,3 +1,18 @@
+/* Escola de Artes Ciencias e Humanidades
+ * da Universidade de Sao Paulo (EACH-USP)
+ * 
+ * Curso de Sistemas de Informacao (Matutino)
+ * 2 Semestre de 2014
+ * 
+ * Primeiro Exercicio Programa (EP1) 
+ * da disciplina de Sistemas Operacionais 
+ * 
+ * @author Amandha Adulis
+ * @author Gustavo Gamino
+ * @author Heloisa Carbone
+ * @author Julia Murano
+ */
+
 import java.util.ArrayList;
 
 public class Estatistica {

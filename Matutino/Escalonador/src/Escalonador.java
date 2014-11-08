@@ -1,3 +1,18 @@
+/* Escola de Artes Ciencias e Humanidades
+ * da Universidade de Sao Paulo (EACH-USP)
+ * 
+ * Curso de Sistemas de Informacao (Matutino)
+ * 2 Semestre de 2014
+ * 
+ * Primeiro Exercicio Programa (EP1) 
+ * da disciplina de Sistemas Operacionais 
+ * 
+ * @author Amandha Adulis
+ * @author Gustavo Gamino
+ * @author Heloisa Carbone
+ * @author Julia Murano
+ */
+
 import java.io.BufferedWriter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,16 +21,49 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+/**
+ * Classe principal que realiza o escalonamento dos dados processos.
+ * 
+ * Possui as seguintes Estruturas de Dados:
+ * - Fila de processos Prontos
+ * - Lista de processos Bloqueados
+ * - Tabela de processos com seus respectivos BCP's
+ * - Processo em execução
+ * 
+ */
 public class Escalonador {
+	
 	private static Estatistica estatistica = new Estatistica();
 	
-	private static BufferedWriter logfile;
+	/**
+	 * Fila de processos Prontos para serem executados, 
+	 * na espera de tempo do processador.
+	 */
 	private static Queue <String> filaProcessosProntos = new LinkedList<String>();
+	
+	/**
+	 * Lista de processos bloqueados na espera de recurso, 
+	 * no caso dispositivo de E/S, para que possa continuar a ser executado.
+	 */
 	private static LinkedList <String> listaProcessosBloqueados = new LinkedList<String>();
+	
+	/**
+	 * Table de Processos,representa todos os processos que estão rodando simultanemanete.
+	 * Mantêm o nome (identificação) do processo, e suas variáveis de execução (BCP).
+	 */
 	private static Map<String, BCP> tabelaProcessos = new HashMap<String, BCP>();
+	
+	/**
+	 * Bloco de Controle de Processo
+	 * Estrutura de dados com todas as instâncias 
+	 * necessárias para execução do processo 
+	 */
 	private static BCP emExecucao = null;
-	private static int time = 0;
-	private static  int quantum;
+	
+	private static BufferedWriter logfile;
+	
+	private static final int QUANTUM = Arquivos.carregarQuantum();
+	private static int time = 0;	
 	private static int PC;
 	
 	
@@ -42,11 +90,13 @@ public class Escalonador {
 
 	
 	/**
-	 * Funcao que faz todas as chamadas de inicializacao do escalonador.
+	 * Realiza todas as chamadas de inicializacao do escalonador.
+	 * - Cria arquivo de log
+	 * - 
 	 */
 	public static void escalonarProcessos() {
-		quantum = Arquivos.carregarQuantum(); 
-		logfile = Arquivos.inicializaLogFile("log" + quantum);
+		//quantum = Arquivos.carregarQuantum(); 
+		logfile = Arquivos.inicializaLogFile("log", QUANTUM);
 		Arquivos.carregarProcessos(logfile, tabelaProcessos, filaProcessosProntos);
 		estatistica.setNumeroDeProcessos(tabelaProcessos.size());
 		printlist(filaProcessosProntos.iterator());
@@ -59,7 +109,7 @@ public class Escalonador {
 		escalonar();
 		Arquivos.escreveLog(logfile, "MEDIA DE TROCAS: "+String.format("%.2f", estatistica.mediaTrocas()));
 		Arquivos.escreveLog(logfile, "MEDIA DE INSTRUCOES: "+String.format("%.2f", estatistica.mediaInstrucoes()));
-		Arquivos.escreveLog(logfile, "QUANTUM: "+quantum);
+		Arquivos.escreveLog(logfile, "QUANTUM: " + QUANTUM);
 		
 		Arquivos.closeLogFile(logfile);
 	}
@@ -78,7 +128,7 @@ public class Escalonador {
 				Arquivos.escreveLog(logfile, "Executando " + emExecucao.getNomePrograma());
 				
 				Boolean continua = true;
-				while ( continua && time < quantum) {
+				while ( continua && time < QUANTUM) {
 					String instrucao = emExecucao.getInstrucao(PC);
 					continua = executaInstrucao(instrucao);
 				}
@@ -192,5 +242,17 @@ public class Escalonador {
 			emExecucao = null;
 		}
 	}
+	
+	public static void main(String[] args) {
+		escalonarProcessos();
+	}
 
+}
+
+/**
+ * Tipos de estado em que um processo pode ser 
+ * classificado: BLOQUEADO, EXECUTANDO ou PRONTO.
+ */
+enum TipoStatus {
+	EXECUTANDO, BLOQUEADO, PRONTO,
 }

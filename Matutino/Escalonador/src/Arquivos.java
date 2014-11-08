@@ -8,19 +8,14 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-
-
 /**
- * 
  * Classe destinada a ler arquivos e criar Processos
- *
  */
 public class Arquivos {
 	
 	/**
 	 * Le o arquivo que contem as instrucoes destinadas a um Processo, e devolve-as
 	 * @param nomeProcesso
-	 * @param posicao
 	 * @return
 	 */
 	public static LinkedList<String> lerProcesso (String nomeProcesso) {
@@ -48,13 +43,13 @@ public class Arquivos {
 	}
 	
 	/**
-	 * Carrega todos os arquivos de processos que se encontram na pasta 'src/processos_entrada'.
+	 * Carrega todos os arquivos de processos que se encontram na pasta 'src/processos'.
 	 * Devolve uma lista ligada com os processos ja criados.
 	 * @return
 	 */
 	public static void carregarProcessos(BufferedWriter logfile,  Map<String, BCP> tabela, Queue<String> fila) {
 		BCP aux;
-		File folder = new File("src/processos_entrada/");
+		File folder = new File("src/processos/");
 
 		for (int i = 1; i < folder.listFiles().length; i++) {
 			String numProcesso;
@@ -63,7 +58,7 @@ public class Arquivos {
 			else 
 				numProcesso = Integer.toString(i);
 			
-			LinkedList<String> instrucoes = lerProcesso("src/processos_entrada/" + numProcesso + ".txt");
+			LinkedList<String> instrucoes = lerProcesso("src/processos/" + numProcesso + ".txt");
 			aux = null;
 			if (instrucoes != null) {
 				aux = new BCP(instrucoes.removeFirst(), instrucoes);
@@ -77,7 +72,7 @@ public class Arquivos {
 	}
 	
 	/**
-	 * Carrega o valor inteiro do quantum que e disponibilizado em um arquivo dentro da pasta 'src/processos_entrada' com o nome de 
+	 * Carrega o valor inteiro do quantum que e disponibilizado em um arquivo dentro da pasta 'src/processos' com o nome de 
 	 * 'quantum.txt'. Retorna esse valor.
 	 * @return
 	 */
@@ -86,7 +81,7 @@ public class Arquivos {
 			 
 			int quantum;
  
-			BufferedReader arquivoProcesso = new BufferedReader(new FileReader("src/processos_entrada/quantum.txt"));
+			BufferedReader arquivoProcesso = new BufferedReader(new FileReader("src/processos/quantum.txt"));
  
 			quantum = Integer.parseInt(arquivoProcesso.readLine());
 
@@ -101,14 +96,19 @@ public class Arquivos {
 		return -1;
 	}
 	
-	public static BufferedWriter inicializaLogFile(String name) {
+	public static BufferedWriter inicializaLogFile(String name, int quantum) {
 
 	    try {
+	    	// Adiciona digito zero ('0') para quantum menor igual a 9,
+	    	// mantendo nome do log com dois digitos
+	    	name += quantum < 10 ? "0" + quantum : "" + quantum;
+	    	
 	    	BufferedWriter out = new BufferedWriter(new FileWriter("src/saida/" + name + ".txt"));
 	    	return out;
  
 	    } catch (IOException e) {  
-	        e.printStackTrace();  
+	        e.printStackTrace();
+	        System.out.println("Erro ao inicializar arquivo de log");
 	    }
 	    
 		return null;  
@@ -119,6 +119,7 @@ public class Arquivos {
 			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("Erro ao fechar arquivo de log");
 		}
 	}
 	
