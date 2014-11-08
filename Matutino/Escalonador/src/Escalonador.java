@@ -40,25 +40,25 @@ public class Escalonador {
 	private static Estatistica estatistica = new Estatistica();
 	
 	/**
-	 * Fila de processos Prontos para serem executados, <br />
+	 * <b>Fila de Processos Prontos</b> para serem executados, <br />
 	 * na espera de tempo do processador.<br />
 	 */
 	private static Queue <String> filaProcessosProntos = new LinkedList<String>();
 	
 	/**
-	 * Lista de processos bloqueados na espera de recurso, <br />
+	 * <b>Lista de Processos Bloqueados</b> na espera de recurso, <br />
 	 * no caso dispositivo de E/S, para que possa continuar a ser executado.<br />
 	 */
 	private static LinkedList <String> listaProcessosBloqueados = new LinkedList<String>();
 	
 	/**
-	 * Table de Processos,representa todos os processos que estão rodando simultanemanete.<br />
+	 * <b>Table de Processos</b>,representa todos os processos que estão rodando simultanemanete.<br />
 	 * Mantêm o nome (identificação) do processo, e suas variáveis de execução (BCP).<br />
 	 */
 	private static Map<String, BCP> tabelaProcessos = new HashMap<String, BCP>();
 	
 	/**
-	 * Bloco de Controle de Processo<br />
+	 * <b>Bloco de Controle de Processo</b><br />
 	 * Estrutura de dados com todas as instâncias <br />
 	 * necessárias para execução do processo <br />
 	 */
