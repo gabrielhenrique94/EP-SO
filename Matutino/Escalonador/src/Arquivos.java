@@ -1,12 +1,12 @@
-/** Escola de Artes Ciencias e Humanidades
- * da Universidade de Sao Paulo (EACH-USP)
- * 
- * Curso de Sistemas de Informacao (Matutino)
- * 2 Semestre de 2014
- * 
- * Primeiro Exercicio Programa (EP1) 
- * da disciplina de Sistemas Operacionais 
- * 
+/** <p>Escola de Artes Ciencias e Humanidades
+ * da Universidade de Sao Paulo (EACH-USP)</p>
+ * <br />
+ * <p>Curso de Sistemas de Informacao (Matutino)
+ * 2 Semestre de 2014</p>
+ * <br />
+ * <p>Primeiro Exercicio Programa (EP1)
+ * da disciplina de Sistemas Operacionais </p>
+ * <br />
  * @author Amandha Adulis
  * @author Gustavo Gamino
  * @author Heloisa Carbone
@@ -24,16 +24,16 @@ import java.util.Map;
 import java.util.Queue;
 
 /**
- * Classe destinada a leitura de arquivos e criação Processos
+ * Classe destinada a leitura de arquivos e criação Processos <br />
  */
 public class Arquivos {
 	
 	//************************** METODOS **************************//
 	
 	/**
-	 * Carrega o valor inteiro do quantum que e disponibilizado em um arquivo dentro da 
-	 * pasta 'src/processos' com o nome de 'quantum.txt'. 
-	 * @return quantum - valor do quantum fornecido pelo arquivo de entrada
+	 * Carrega o valor inteiro do quantum que e disponibilizado em um arquivo dentro da <br />
+	 * pasta 'src/processos' com o nome de 'quantum.txt'. <br />
+	 * @return quantum - valor do quantum fornecido pelo arquivo de entrada<br />
 	 * Se for -1 houve um erro de leitura / execução no método
 	 */
 	public static int carregarQuantum() {
@@ -55,8 +55,8 @@ public class Arquivos {
 	}
 	
 	/**
-	 * Carrega todos os arquivos de processos, e suas respectivas instruções,
-	 * que se encontram na pasta 'src/processos' e atualiza a Lista de Processos Prontos 
+	 * Carrega todos os arquivos de processos, e suas respectivas instruções,<br />
+	 * que se encontram na pasta 'src/processos' e atualiza a Lista de Processos Prontos <br />
 	 * @param logfile - Arquivo de log
 	 * @param tabela - Tabela de Processos do escalonador
 	 * @param fila - Fila de Processos Prontos
@@ -82,8 +82,8 @@ public class Arquivos {
 	}
 	
 	/**
-	 * Le o arquivo que contem as instrucoes destinadas a um Processo, 
-	 * e devolve-as numa lista ligada
+	 * Le o arquivo que contem as instrucoes destinadas a um Processo,<br /> 
+	 * e devolve-as numa lista ligada<br />
 	 * @param nomeProcesso
 	 * @return processo - Lista ligada de instruções do processo
 	 */
@@ -111,8 +111,8 @@ public class Arquivos {
 	}
 	
 	/**
-	 * Cria a o arquivo de log no diretório "src/saida/" e retorna o buffer
-	 * para realizar a escrita no arquivo.
+	 * Cria a o arquivo de log no diretório "src/saida/" e retorna o buffer<br />
+	 * para realizar a escrita no arquivo.<br />
 	 * @param name - nome do arquivo ("log" como foi definido por padrão)
 	 * @param quantum - valor do quantum
 	 * @return out - BufferdWriter
@@ -135,7 +135,7 @@ public class Arquivos {
 	}
 	
 	/**
-	 * Fecha o buffer de escrita do arquivo.
+	 * Fecha o buffer de escrita do arquivo.<br />
 	 * @param file - arquivo que deverá ser fechado
 	 */
 	public static void closeLogFile(BufferedWriter file) {
@@ -148,8 +148,8 @@ public class Arquivos {
 	}
 	
 	/**
-	 * Realiza a escrita ddo conteúdo da String 'info' 
-	 * no arquivo definidopelo buffer de escrita da variável 'log'
+	 * Realiza a escrita ddo conteúdo da String 'info' <br />
+	 * no arquivo definido pelo buffer de escrita da variável 'log'<br />
 	 * @param log - arquivo para escrita
 	 * @param info - conteúdo que deverá ser escrito
 	 */

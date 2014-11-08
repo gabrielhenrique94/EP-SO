@@ -1,12 +1,12 @@
-/** Escola de Artes Ciencias e Humanidades
- * da Universidade de Sao Paulo (EACH-USP)
- * 
- * Curso de Sistemas de Informacao (Matutino)
- * 2 Semestre de 2014
- * 
- * Primeiro Exercicio Programa (EP1) 
- * da disciplina de Sistemas Operacionais 
- * 
+/** <p>Escola de Artes Ciencias e Humanidades
+ * da Universidade de Sao Paulo (EACH-USP)</p>
+ * <br />
+ * <p>Curso de Sistemas de Informacao (Matutino)
+ * 2 Semestre de 2014</p>
+ * <br />
+ * <p>Primeiro Exercicio Programa (EP1)
+ * da disciplina de Sistemas Operacionais </p>
+ * <br />
  * @author Amandha Adulis
  * @author Gustavo Gamino
  * @author Heloisa Carbone
@@ -22,81 +22,80 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
- * Classe principal que realiza o escalonamento dos dados processos.
- * 
- * Possui as seguintes Estruturas de Dados:
- * > Fila de processos Prontos;
- * > Lista de processos Bloqueados;
- * > Tabela de processos com seus respectivos BCP's;
- * > Processo em execução;
- * 
+ * Classe principal que realiza o escalonamento dos dados processos.<br />
+ * <br />
+ * Possui as seguintes Estruturas de Dados:<br />
+ * - Fila de processos Prontos;<br />
+ * - Lista de processos Bloqueados;<br />
+ * - Tabela de processos com seus respectivos BCP's;<br />
+ * - Processo em execução;<br />
  */
 public class Escalonador {
 	
 	//********************* VARIAVEIS GLOBAIS *********************//
 		
 	/**
-	 * Objeto para realizar estatisticas
+	 * Objeto para realizar estatísticas.<br />
 	 */	
 	private static Estatistica estatistica = new Estatistica();
 	
 	/**
-	 * Fila de processos Prontos para serem executados, 
-	 * na espera de tempo do processador.
+	 * Fila de processos Prontos para serem executados, <br />
+	 * na espera de tempo do processador.<br />
 	 */
 	private static Queue <String> filaProcessosProntos = new LinkedList<String>();
 	
 	/**
-	 * Lista de processos bloqueados na espera de recurso, 
-	 * no caso dispositivo de E/S, para que possa continuar a ser executado.
+	 * Lista de processos bloqueados na espera de recurso, <br />
+	 * no caso dispositivo de E/S, para que possa continuar a ser executado.<br />
 	 */
 	private static LinkedList <String> listaProcessosBloqueados = new LinkedList<String>();
 	
 	/**
-	 * Table de Processos,representa todos os processos que estão rodando simultanemanete.
-	 * Mantêm o nome (identificação) do processo, e suas variáveis de execução (BCP).
+	 * Table de Processos,representa todos os processos que estão rodando simultanemanete.<br />
+	 * Mantêm o nome (identificação) do processo, e suas variáveis de execução (BCP).<br />
 	 */
 	private static Map<String, BCP> tabelaProcessos = new HashMap<String, BCP>();
 	
 	/**
-	 * Bloco de Controle de Processo
-	 * Estrutura de dados com todas as instâncias 
-	 * necessárias para execução do processo 
+	 * Bloco de Controle de Processo<br />
+	 * Estrutura de dados com todas as instâncias <br />
+	 * necessárias para execução do processo <br />
 	 */
 	private static BCP emExecucao = null;
 	
 	/**
-	 * Buffer de escrita do arquivo de log
+	 * Buffer de escrita do arquivo de log<br />
 	 */
 	private static BufferedWriter logfile;
 	
 	/**
-	 * Quantum utilizado pelo escalonador.
-	 * Valor atribuido de acordo com arquivo 'quantum.txt'
+	 * Quantum utilizado pelo escalonador.<br />
+	 * Valor atribuido de acordo com arquivo 'quantum.txt'<br />
 	 */
 	private static final int QUANTUM = Arquivos.carregarQuantum();
 	
 	/**
-	 * Número de quantuns utilizados por um processo
-	 * a partir do momento em que foi selecionado para
-	 * que fosse executado até o fim do seu quantum ou
-	 * chamada ao sistema (E/S)
+	 * Número de quantuns utilizados por um processo<br />
+	 * a partir do momento em que foi selecionado para<br />
+	 * que fosse executado até o fim do seu quantum ou<br />
+	 * chamada ao sistema (E/S).<br />
 	 */
 	private static int time = 0;
 	
 	/**
-	 * Contador de Programa (PC) que funciona como um ponteiro 
-	 * para instrução onde o escalonador está a executar 
+	 * Contador de Programa (PC) que funciona como um ponteiro <br />
+	 * para instrução onde o escalonador está a executar. <br />
 	 */
 	private static int PC;
 
 	//************************** METODOS **************************//
 	
 	/**
-	 * Realiza todas as chamadas de inicializacao do escalonador.
-	 * > Cria arquivo de log;
-	 * > Cria fila de processos prontos e a tabela de processos
-	 * > Gera estatisticas 
+	 * Realiza todas as chamadas de inicializacao do escalonador.<br />
+	 * - Cria arquivo de log;<br />
+	 * - Cria fila de processos prontos e a tabela de processos;<br />
+	 * - Gera estatisticas;<br />
 	 */
 	private static void escalonarProcessos() {
 		//quantum = Arquivos.carregarQuantum(); 
@@ -105,7 +104,7 @@ public class Escalonador {
 		estatistica.setNumeroDeProcessos(tabelaProcessos.size());
 		printlist(filaProcessosProntos.iterator());
 		
-		System.out.println("\n ------------------------------------------------------------ \n \n");
+		System.out.println("\n ------------------------------------------------------------ \n\n");
 		
 		//imprimeArquivos();	
 		
@@ -118,9 +117,9 @@ public class Escalonador {
 	}
 
 	/**
-	 * Realiza o escalonamento, de acordo com o quantum que foi definido
-	 * e as diretrizes de ação para cada comando da arquitetura.
-	 * Manipula estruturas de dados e variáveis gerenciando-os.
+	 * Realiza o escalonamento, de acordo com o quantum que foi definido <br />
+	 * e as diretrizes de ação para cada comando da arquitetura.<br />
+	 * Manipula estruturas de dados e variáveis gerenciando-os.<br />
 	 */
 	private static void escalonar() {
 		String nomeProcesso;
@@ -135,8 +134,10 @@ public class Escalonador {
 				PC = emExecucao.getPC();
 				Arquivos.escreveLog(logfile, "Executando " + emExecucao.getNomePrograma());
 				
+				printMap();
+				
 				Boolean continua = true;
-				while ( continua && time < QUANTUM) {
+				while (continua && time < QUANTUM) {
 					String instrucao = emExecucao.getInstrucao(PC);
 					continua = executaInstrucao(instrucao);
 				}
@@ -153,17 +154,16 @@ public class Escalonador {
 				}
 				estatistica.addInstrucoes(time);
 			}
-			printMap();
 			
 			atualizarListaBloqueados();		
 		}
 	}
 	
 	/**
-	 * Executa a instrução na arquitetura definida, realizando o gerenciamento
-	 * das variáveis de execução, como PC, lista de status dos processos e etc.
-	 * @param instrucao
-	 * @return true - se executou a instrução | 
+	 * Executa a instrução na arquitetura definida, realizando o gerenciamento <br />
+	 * das variáveis de execução, como PC, lista de status dos processos e etc.<br />
+	 * @param instrucao<br />
+	 * @return true - se executou a instrução |<br /> 
 	 * 		   false - o processo realizou uma chamada a sistema (E/S) 
 	 */
 	private static boolean executaInstrucao(String instrucao) {
@@ -225,9 +225,9 @@ public class Escalonador {
 	}
 
 	/**
-	 * Como a lista de bloqueados tambem acaba funcionando como uma fila, 
-	 * basta pegar o primeiro para passar para a lista de prontos em qualquer
-	 * tipo de chamada para o mesmo.
+	 * Como a lista de bloqueados tambem acaba funcionando como uma fila, <br /> 
+	 * basta pegar o primeiro para passar para a lista de prontos em qualquer <br />
+	 * tipo de chamada para o mesmo.<br />
 	 */
 	private static void passarBloqueadoParaPronto(BCP processo) {
 		processo.setAnteriormenteBloqueado(1);
@@ -237,9 +237,9 @@ public class Escalonador {
 	}
 	
 	/**
-	 * Cada vez que um Proceso e executado, a variavel espera de bloqueio 
-	 * de todos os processos bloqueados deve ser atualizada, e se ja estiverem
-	 * o tempo necessario devem passar para a lista de pronto.
+	 * Cada vez que um Proceso e executado, a variavel espera de bloqueio <br /> 
+	 * de todos os processos bloqueados deve ser atualizada, e se ja estiverem <br />
+	 * o tempo necessario devem passar para a lista de pronto.<br />
 	 */
 	private static void atualizarListaBloqueados() {
 		LinkedList<String> listaAuxiliar = new LinkedList<String>(listaProcessosBloqueados);
@@ -259,20 +259,23 @@ public class Escalonador {
 	}
 	
 	/**
-	 * Escreve no console a Tabela de Processos 
+	 * Escreve no console a Tabela de Processos <br />
 	 */
 	public static void printMap(){
 		Set<String> processos = tabelaProcessos.keySet();
 		if (processos.isEmpty()) return;
-		System.out.println("\n" + " ===================== " + "\n" + "| TABELA DE PROCESSOS |" + "\n" + " ===================== ");
+		System.out.println("\n" + " ========================= " + "\n" + "|   TABELA DE PROCESSOS   |" 
+					+ "\n" + " ========================= ");
 		for(String processo: processos){
-			System.out.println("|     > " + processo + "       |");
+			System.out.println("| > " + processo + ": " + tabelaProcessos.get(processo).getPC() 
+					+ "/" + tabelaProcessos.get(processo).instrucoes.size() 
+					+ ", " + tabelaProcessos.get(processo).getStatus() + " |");
 		}
-		System.out.println(" ===================== " + "\n");
+		System.out.println(" ========================= " + "\n");
 	}
 	
 	/**
-	 * Escreve no console as instruções de cada processo (rotina)
+	 * Escreve no console as instruções de cada processo (rotina).<br />
 	 */
 	public static void imprimeArquivos(){
 		Set<String> arqs = tabelaProcessos.keySet();
@@ -283,7 +286,7 @@ public class Escalonador {
 	}
 	
 	/**
-	 * Iterador utilizado para percorrer e escrever no console diferentes listas
+	 * Iterador utilizado para percorrer e escrever no console diferentes listas.<br />
 	 * @param it - lista que será percorrida
 	 */
 	public static void printlist(Iterator<String> it){
@@ -299,8 +302,8 @@ public class Escalonador {
 }
 
 /**
- * Tipos de estado em que um processo pode ser 
- * classificado: BLOQUEADO, EXECUTANDO ou PRONTO.
+ * Tipos de estado em que um processo pode ser <br />
+ * classificado: BLOQUEADO, EXECUTANDO ou PRONTO.<br />
  */
 enum TipoStatus {
 	EXECUTANDO, BLOQUEADO, PRONTO,
